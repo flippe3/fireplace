@@ -11,5 +11,10 @@ pipeline {
                 sh 'python3 test.py'
             }
         }
+        stage('start') {
+            steps {
+                sh 'python3 app.py'
+            }
+        }
     }
 }
