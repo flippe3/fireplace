@@ -15,7 +15,7 @@ pipeline {
     }
     post {
         success {
-            sh 'python3 app.py'
+            'sudo systemctl restart app.service'
         }
     }   
 }
