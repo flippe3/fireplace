@@ -7,7 +7,8 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=app.py
+WorkingDirecory=/var/lib/jenkins/workspace/fireplace
+ExecStart=/var/lib/jenkins/workspace/fireplace/app.py
 
 [Install]
 WantedBy=multi-user.target
