@@ -6,7 +6,7 @@ app = Flask(__name__)
 def map_func():
 	return render_template('map.html')
 
-
+"""
 @app.route('/success',methods = ['POST', 'GET'])
 def success():
    if request.method == 'POST':
@@ -31,6 +31,6 @@ def success():
 @app.route('/create')
 def create():
     return render_template("create.html")
-
+"""
 if __name__ == '__main__':
     app.run(host="172.30.103.27", port=5001)
