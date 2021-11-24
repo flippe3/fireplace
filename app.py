@@ -7,7 +7,7 @@ def map_func():
 	return render_template('map.html')
 
 @app.route('/success',methods = ['POST', 'GET'])
-def result():
+def success():
    if request.method == 'POST':
 
       result = request.form
@@ -26,7 +26,7 @@ def result():
       return render_template("success.html",result = result)
 
 @app.route('/create')
-def result():
+def create():
     return render_template("create.html")
 
 if __name__ == '__main__':
