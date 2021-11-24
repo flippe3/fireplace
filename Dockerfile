@@ -14,3 +14,4 @@ RUN apk add docker
 RUN apk add py-pip
 RUN apk add python-dev libffi-dev openssl-dev gcc libc-dev make
 RUN pip install docker-compose
+RUN pip3 install mysql-connector-python
