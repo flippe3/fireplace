@@ -6,14 +6,7 @@ home_path = os.path.expanduser('~')
 f = open(home_path + "/.weather_key",'r')
 api_key = f.read()
 
-# I want to use this api but my key hasn't activated yet.
-'''
-def get_weather_1(lat, lon):
-    url = "https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&appid=%s&units=metric" % (lat, lon, api_key)
-    response = requests.get(url)
-    data = json.loads(response.text)
-    print(response)
-'''
+save_file = open("simulator_save", 'w')
 
 def get_weather(lat, lon, time):
     url = "http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s" % (api_key, lat, lon)
@@ -57,7 +50,8 @@ def get_data(lat, lon):
 def loop(data, lat, lon):
     percentage = calculate(data)
     normalize = normal_dist(percentage)
-    print(normalize[0])
+    #print(normalize[0])
+    save_file.write(str(normalize[0])+"\n")
     
 if __name__ == "__main__":
     lat, lon = 65.633054, 22.093550
