@@ -1,0 +1,14 @@
+[Unit]
+Description=Fireplace simulator
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirecory=/var/lib/jenkins/workspace/fireplace
+ExecStart=/usr/bin/python3 /var/lib/jenkins/workspace/fireplace/simulator.py
+
+[Install]
+WantedBy=multi-user.target
