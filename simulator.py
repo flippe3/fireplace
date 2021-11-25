@@ -6,7 +6,7 @@ home_path = os.path.expanduser('~')
 f = open(home_path + "/.weather_key",'r')
 api_key = f.read()
 
-save_file = open("simulator_save", 'w')
+save_file = open(home_path + "/.simulator_save", 'w')
 
 def get_weather(lat, lon, time):
     url = "http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s" % (api_key, lat, lon)
