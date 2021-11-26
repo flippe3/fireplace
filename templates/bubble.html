@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+</head>
+<body style='margin-left: 0'>
+<div><a href=/create>Create</a></div>
+<div><a href=/login>Log In</a></div>
+<div style="width: 100%; height: 100%" id="map"></div>
+
+
+<script>
+function addMarkerToGroup(group, coordinate, html) {
+  var marker = new H.map.Marker(coordinate);
+  marker.setData(html);
+  group.addObject(marker);
+}
+
+function addInfoBubble(map) {
+  var group = new H.map.Group();
+
+  map.addObject(group);
+
+  group.addEventListener('tap', function (evt) {
+    var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+      content: evt.target.getData()
+    });
+    ui.addBubble(bubble);
+  }, false);
+
+  addMarkerToGroup(group, {lat:65.633054, lng:22.093550},
+    '<div><a href=/create>Birdtower</a></div>');
+  addMarkerToGroup(group, {lat:{{ latlist[1] }}, lng:{{ longlist[1] }}},
+    '<div><a href=/create>Birdtower2</a></div>');
+}
+
+var platform = new H.service.Platform({
+        'apikey': 'okW9SIZ2UuTrcxR6PGJtEVq9bGyh3xuMw5LN2grykIQ'
+         });
+
+var defaultLayers = platform.createDefaultLayers();
+
+var map = new H.Map(document.getElementById('map'), defaultLayers.vector.normal.map, {
+  // Barcelona location
+  center: new H.geo.Point(65.633054, 22.093550),
+  zoom: 15,
+  pixelRatio: window.devicePixelRatio || 1
+});
+
+window.addEventListener('resize', () => map.getViewPort().resize());
+// Behavior implements default interactions for pan/zoom
+var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+addInfoBubble(map);
+
+</script>
+</body>
+</html>
