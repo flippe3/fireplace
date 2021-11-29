@@ -3,102 +3,60 @@
 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"type="text/javascript" charset="utf-8"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css"href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
 </head>
-
-<body style='margin: 0'>
-<div style="width: 100%; height: 100%" id="mapContainer"></div>
+<body style='margin-left: 0'>
+<div><a href=/create>Create</a></div>
+<div><a href=/login>Log In</a></div>
+<div style="width: 100%; height: 100%" id="map"></div>
 
 
 <script>
-      // Initialize the platform object:
-      var platform = new H.service.Platform({
+function addMarkerToGroup(group, coordinate, html) {
+  var marker = new H.map.Marker(coordinate);
+  marker.setData(html);
+  group.addObject(marker);
+}
+
+function addInfoBubble(map) {
+  var group = new H.map.Group();
+
+  map.addObject(group);
+
+  group.addEventListener('tap', function (evt) {
+    var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+      content: evt.target.getData()
+    });
+    ui.addBubble(bubble);
+  }, false);
+
+  {%for i in range(0, latlist|length)%}
+     addMarkerToGroup(group, {lat:{{ latlist[i] }}, lng:{{ longlist[i] }}},
+    '<div><a href=/create>{{ namelist[i] }}</a></div>');
+  {%endfor%}
+}
+
+var platform = new H.service.Platform({
         'apikey': 'okW9SIZ2UuTrcxR6PGJtEVq9bGyh3xuMw5LN2grykIQ'
-      });
+         });
 
-	   const lat = 65.633054;
-	   const long = 22.093550;
-	   const lat2 = {{ latlist[1] }};
-	   const long2 = {{ longlist[1] }};
+var defaultLayers = platform.createDefaultLayers();
 
-	// Obtain the default map types from the platform object
-      var maptypes = platform.createDefaultLayers();
-
-      // Initialize a map:
-      var map = new H.Map(
-        document.getElementById('mapContainer'),
-        maptypes.raster.terrain.map,
-        {
-          zoom: 15,
-          center: { lat: lat, lng: long }
-        });
-
-	// Enable the event system on the map instance:
-	  var mapEvents = new H.mapevents.MapEvents(map);
-
-	// Add event listener:
-	  map.addEventListener('tap', function(evt) {
-    // Log 'tap' and 'mouse' events:
-      console.log(evt.type, evt.currentPointer.type);
+var map = new H.Map(document.getElementById('map'), defaultLayers.vector.normal.map, {
+  // Barcelona location
+  center: new H.geo.Point(65.633054, 22.093550),
+  zoom: 15,
+  pixelRatio: window.devicePixelRatio || 1
 });
 
-	// Instantiate the default behavior, providing the mapEvents object:
-	 var behavior = new H.mapevents.Behavior(mapEvents);
+window.addEventListener('resize', () => map.getViewPort().resize());
+// Behavior implements default interactions for pan/zoom
+var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+var ui = H.ui.UI.createDefault(map, defaultLayers);
 
-	//window.addEventListener('resize',()=> get.ViewProt().resize())
-	var marker = new H.map.Marker({ lat: lat, lng: long });
-	var marker2 = new H.map.Marker({ lat: lat2, lng: long2 });
-
-	// Add the marker to the map:
-	map.addObject(marker);
-	map.addObject(marker2);
-
-	// Create the default UI:
-	var ui = H.ui.UI.createDefault(map, maptypes);
-
-// Create an info bubble object at a specific geographic location:
-var bubble = new H.ui.InfoBubble({ lng: 76.0534, lat: 22.9676 }, {
-                content: '<b>Dewas</b>'
-             });
-
-// Add info bubble to the UI:
-ui.addBubble(bubble);
-
-
-/////////////////////////////////////////////
-function addInfoBubble(map) {
-  map.set('center', new nokia.maps.geo.Coordinate(53.430, -2.961));
-  map.setZoomLevel(7);
-
-  var infoBubbles = new nokia.maps.map.component.InfoBubbles(),
-    TOUCH = nokia.maps.dom.Page.browser.touch,
-    CLICK = TOUCH ? 'tap' : 'click',
-    container = new nokia.maps.map.Container();
-
-  container.addListener(CLICK, function (evt) {
-    infoBubbles.openBubble(evt.target.html, evt.target.coordinate);
-  }, false);
-  map.components.add(infoBubbles);
-  map.objects.add(container);
-
-  addMarkerToContainer(container, [53.439, -2.221],
-    '<div><a href=\'http://www.mcfc.co.uk\' >Manchester City</a>' +
-    '</div><div >City of Manchester Stadium<br>Capacity: 48,000</div>');
-
-  addMarkerToContainer(container, [53.430, -2.961],
-    '<div ><a href=\'http://www.liverpoolfc.tv\' >Liverpool</a>' +
-    '</div><div >Anfield<br>Capacity: 45,362</div>');
-}
-
-function addMarkerToContainer(container, coordinate, html) {
-  var marker = new nokia.maps.map.StandardMarker(
-    coordinate,
-    {html: html}
-  );
-  container.objects.add(marker);
-}
+addInfoBubble(map);
 
 </script>
 </body>

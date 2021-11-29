@@ -1,19 +1,17 @@
-from flask import Flask,render_template, request
-import mysql.connector
+from flask import Flask,render_template, request, jsonify
+import requests
 app = Flask(__name__)
-
-@app.route('/test')
-def map_func():
-	return render_template('map.html')
 
 
 @app.route('/')
-def map_func2():
-    namelist = ['foo', 'bar']
-    latlist = [65.633054, 65]
-    longlist = [22.093550, 22]
+def map_func():
 
-    return render_template('bubble.html', namelist=namelist, latlist=latlist, longlist=longlist)
+    response = requests.get("http://172.30.103.27:4242/allfireplaces")
+    data = response.json()
+    latlist=data['lat']
+    longlist=data['long']
+    namelist=data['name']
+    return render_template('map.html', namelist=namelist, latlist=latlist, longlist=longlist)
 
 
 @app.route('/success',methods = ['POST', 'GET'])
@@ -21,21 +19,19 @@ def success():
    if request.method == 'POST':
 
       result = request.form
-      #print(str(result.getlist('name')[0]))
-
-      mydb = mysql.connector.connect(
-          host="127.0.0.1",
-          user="root",
-          password="gewe"
-      )
-
-      cursor = mydb.cursor()
-
-      cursor.execute("USE firedb")
-      cursor.execute("INSERT INTO fireplaces (name, latitude, longitude) VALUES (\""+str(result.getlist('name')[0])+"\", "+str(result.getlist('latitude')[0])+", "+str(result.getlist('longitude')[0])+");")
-      mydb.commit()
 
 
+      name=str(result.getlist('name')[0])
+      latitude=str(result.getlist('latitude')[0])
+      longitude=str(result.getlist('longitude')[0])
+      point=jsonify(name,latitude,longitude)
+      point = {
+          "name": name,
+          "latitude": latitude,
+          "longitude": longitude
+      }
+
+      requests.get("http://172.30.103.27:4242/create",params=point)
       return render_template("success.html")
 
 @app.route('/create')
@@ -43,4 +39,4 @@ def create():
     return render_template("create.html")
 
 if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=5001)#172.30.103.27
+    app.run(host="172.30.103.27", port=5001)
