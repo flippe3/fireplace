@@ -30,6 +30,25 @@ def create():
     mydb.commit()
     return jsonify(value="foo")
 
+@app.route("/delete")
+def delete():
+    mydb = mysql.connector.connect(
+        host="172.30.103.27",
+        user="admin",
+        password="admin"
+    )
+
+    cursor = mydb.cursor()
+
+    id=request.args.get('id')
+    print(id)
+    print(type(id))
+    cursor.execute("USE firedb")
+    cursor.execute("DELETE FROM fireplaces WHERE name=\""+id+"\";")
+    print("SUCCESS IS ASSURED")
+    mydb.commit()
+    return jsonify(value="foo")
+
 @app.route("/allfireplaces")
 def return_fireplaces():
     mydb = mysql.connector.connect(
@@ -55,6 +74,34 @@ def return_fireplaces():
         longs.append(float(x[2]))
 
     return jsonify(name=names,lat=lats,long=longs)#(long=long,lat=lat)
+
+
+@app.route("/detail")
+def detail():
+    mydb = mysql.connector.connect(
+        host="172.30.103.27",
+        user="admin",
+        password="admin"
+    )
+
+    cursor = mydb.cursor()
+
+    cursor.execute("USE firedb")
+    id = request.args.get('id')
+    print(id)
+    cursor.execute("SELECT * FROM fireplaces WHERE name=\""+ id +"\";")
+
+    result = cursor.fetchall()
+    names = []
+    lats =[]
+    longs = []
+
+    for x in result:
+        names.append(x[0])
+        lats.append(float(x[1]))
+        longs.append(float(x[2]))
+
+    return jsonify(name=names,lat=lats,long=longs)
 
 if __name__ == "__main__":
     app.run(host="172.30.103.27", port=4242)
