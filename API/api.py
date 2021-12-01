@@ -5,10 +5,18 @@ app = Flask(__name__)
 lat = 65.633054
 long = 22.093550
 
+home_path = "/home/lensee-1"
+
 @app.route("/")
 def dummy_api():
     return jsonify(long=long,lat=lat)
 
+@app.route("/simulator")
+def simulator():
+    f = open(home_path + "/.simulator_save", 'r')
+    val = f.read().split('\n')[-2]
+    return jsonify(value=val)
+    
 @app.route("/create")
 def create():
     mydb = mysql.connector.connect(
@@ -104,4 +112,4 @@ def detail():
     return jsonify(name=names,lat=lats,long=longs)
 
 if __name__ == "__main__":
-    app.run(host="172.30.103.27", port=4242)
+    app.run(host="127.0.0.1", port=4242)
