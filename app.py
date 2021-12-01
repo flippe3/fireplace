@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def map_func():
-    response = requests.get("http://172.30.103.27:4242/allfireplaces")
+    response = requests.get("http://127.0.0.1:4242/allfireplaces")
     data = response.json()
     latlist=data['lat']
     longlist=data['long']
@@ -19,7 +19,7 @@ def detail():
        id = {
            "id": fireplace_id
        }
-       response = requests.get("http://172.30.103.27:4242/detail", params=id)
+       response = requests.get("http://127.0.0.1:4242/detail", params=id)
        data = response.json()
        name= data['name'][0]
        latitude= data["lat"][0]
@@ -44,7 +44,7 @@ def success():
           "longitude": longitude
       }
 
-      requests.get("http://172.30.103.27:4242/create", params=point)
+      requests.get("http://127.0.0.1:4242/create", params=point)
       return render_template("success.html")
 
 
@@ -58,12 +58,13 @@ def delete():
           "id": id
       }
       print(id)
-      requests.get("http://172.30.103.27:4242/delete", params=id)
+      requests.get("http://127.0.0.1:4242/delete", params=id)
 
       return render_template("success.html")
+
 @app.route('/create')
 def create():
     return render_template("create.html")
 
 if __name__ == '__main__':
-    app.run(host="172.30.103.27", port=5001)
+    app.run(host="127.0.0.1", port=5001, debug=True)
