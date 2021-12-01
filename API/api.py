@@ -112,4 +112,4 @@ def detail():
     return jsonify(name=names,lat=lats,long=longs)
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=4242)
+    app.run(host="172.30.103.27", port=4242)
