@@ -17,6 +17,8 @@ pipeline {
     post {
         success {
             sh 'sudo systemctl restart app.service'
+            sh 'sudo systemctl restart api.service'
+            sh 'sudo systemctl restart simulator.service'
         }
     }   
 }
