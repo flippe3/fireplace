@@ -12,9 +12,9 @@ def dummy_api():
 @app.route("/create")
 def create():
     mydb = mysql.connector.connect(
-        host="172.30.103.27",
-        user="admin",
-        password="admin"
+        host="127.0.0.1",
+        user="root",
+        password="root"
     )
 
     cursor = mydb.cursor()
@@ -33,9 +33,9 @@ def create():
 @app.route("/delete")
 def delete():
     mydb = mysql.connector.connect(
-        host="172.30.103.27",
-        user="admin",
-        password="admin"
+        host="127.0.0.1",
+        user="root",
+        password="root"
     )
 
     cursor = mydb.cursor()
@@ -52,9 +52,9 @@ def delete():
 @app.route("/allfireplaces")
 def return_fireplaces():
     mydb = mysql.connector.connect(
-        host="172.30.103.27",
-        user="admin",
-        password="admin"
+        host="127.0.0.1",
+        user="root",
+        password="root"
     )
 
     cursor = mydb.cursor()
@@ -79,9 +79,9 @@ def return_fireplaces():
 @app.route("/detail")
 def detail():
     mydb = mysql.connector.connect(
-        host="172.30.103.27",
-        user="admin",
-        password="admin"
+        host="127.0.0.1",
+        user="root",
+        password="root"
     )
 
     cursor = mydb.cursor()
