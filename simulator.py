@@ -2,12 +2,11 @@ import requests, json, timezonefinder, pytz, os, numpy, time
 from datetime import datetime, timedelta
 
 # This is if the file is stored on the server.
-home_path = os.path.expanduser('~')
+#home_path = os.path.expanduser('~')
+home_path = "/home/lensee-1"
 f = open(home_path + "/.weather_key",'r')
 api_key = f.read()
-
-save_file = open(home_path + "/.simulator_save", 'w')
-
+    
 def get_weather(lat, lon, time):
     url = "http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s" % (api_key, lat, lon)
     response = requests.get(url)
@@ -48,10 +47,12 @@ def get_data(lat, lon):
         print("Calling the weather API failed.")
 
 def loop(data, lat, lon):
+    save_file = open(home_path + "/.simulator_save", 'a')
     percentage = calculate(data)
     normalize = normal_dist(percentage)
     #print(normalize[0])
     save_file.write(str(normalize[0])+"\n")
+    f.close()
     
 if __name__ == "__main__":
     lat, lon = 65.633054, 22.093550
