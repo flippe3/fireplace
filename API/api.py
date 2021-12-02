@@ -35,8 +35,8 @@ def sign_up():
 
     # This is our implementation of salted passwords.
     salt = os.urandom(32)
-    hashed_password = hashlib.sha256(password+salt).hexdigest()
-    
+    hashed_password = hashlib.sha256(password.encode() + salt).hexdigest()
+
     cursor.execute("USE firedb")
     cursor.execute(
         "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(
