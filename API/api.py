@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-import mysql.connector
+import mysql.connector, os, hashlib
 
 app = Flask(__name__)
 lat = 65.633054
@@ -16,15 +16,57 @@ def simulator():
     f = open(home_path + "/.simulator_save", 'r')
     val = f.read().split('\n')[-2]
     return jsonify(value=val)
-    
-@app.route("/create")
-def create():
+
+def connect_db():
     mydb = mysql.connector.connect(
         host="127.0.0.1",
         user="root",
         password="root"
     )
+    return mydb
 
+@app.route("/signup")
+def sign_up():
+    mydb = connect_db()
+    cursor = mydb.cursor()
+
+    username=request.args.get('username')
+    password=request.args.get('password')
+
+    # This is our implementation of salted passwords.
+    salt = os.urandom(32)
+    hashed_password = hashlib.sha256(password+salt).hexdigest()
+    
+    cursor.execute("USE firedb")
+    cursor.execute(
+        "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", " + str(
+            hashed_password) + ", user, " + str(salt) ");")
+    mydb.commit()
+    return jsonify(value="foo")
+
+@app.route("/signin")
+def sign_in():
+    mydb = connect_db()
+    cursor = mydb.cursor()
+
+    username=request.args.get('username')
+    password=request.args.get('password')
+    # This is our implementation of salted passwords.
+    
+    hashed_password = hashlib.sha256(password+salt).hexdigest()
+    
+    cursor.execute("USE firedb")
+    cursor.execute("SELECT (salt, password) FROM users WHERE name=\""+str(username)"\";")
+    result = cursor.fetchall()    
+
+    mydb.commit()
+    return jsonify(value="foo")
+
+
+
+@app.route("/create")
+def create():
+    mydb = connect_db()
     cursor = mydb.cursor()
 
     name=request.args.get('name')
@@ -40,12 +82,7 @@ def create():
 
 @app.route("/delete")
 def delete():
-    mydb = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        password="root"
-    )
-
+    mydb = connect_db()
     cursor = mydb.cursor()
 
     id=request.args.get('id')
@@ -59,12 +96,7 @@ def delete():
 
 @app.route("/allfireplaces")
 def return_fireplaces():
-    mydb = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        password="root"
-    )
-
+    mydb = connect_db()
     cursor = mydb.cursor()
 
     cursor.execute("USE firedb")
@@ -86,12 +118,7 @@ def return_fireplaces():
 
 @app.route("/detail")
 def detail():
-    mydb = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        password="root"
-    )
-
+    mydb = connect_db()
     cursor = mydb.cursor()
 
     cursor.execute("USE firedb")

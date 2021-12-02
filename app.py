@@ -18,6 +18,7 @@ def signin():
 
 @app.route('/signup')
 def signup():
+    respose
     return render_template('signup.html')
 
 @app.route('/detail',methods = ['GET'])
@@ -33,7 +34,6 @@ def detail():
        latitude= data["lat"][0]
        longitude= data["long"][0]
        return render_template("detail.html", name=name,latitude=latitude,longitude=longitude)
-
 
 @app.route('/success',methods = ['POST', 'GET'])
 def success():
@@ -56,6 +56,22 @@ def success():
       return render_template("success.html")
 
 
+@app.route('/signup_success',methods = ['POST', 'GET'])
+def signup_success():
+   if request.method == 'POST':
+      result = request.form
+
+      name=str(result.getlist('name')[0])
+      password=str(result.getlist('password')[0])
+
+      user = {
+          "name": name,
+          "password": password
+      }
+
+      requests.get("http://172.30.103.27:4242/signup", params=user)
+      return redirect("http://172.30.103.27:5001/")
+  
 @app.route('/delete',methods = ['POST'])
 def delete():
    if request.method == 'POST':
