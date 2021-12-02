@@ -35,7 +35,7 @@ def signup_success():
       }
 
       requests.get("http://172.30.103.27:4242/signup", params=user)
-      return redirect("http://172.30.103.27:5001/")
+      return redirect("http://130.240.200.57:5001/")
 
 @app.route('/detail',methods = ['GET'])
 def detail():
