@@ -12,11 +12,11 @@ def map_func():
     namelist=data['name']
     return render_template('map.html', namelist=namelist, latlist=latlist, longlist=longlist)
 
-@app.route('/')
+@app.route('/signin')
 def signin():
     return render_template('signin.html')
 
-@app.route('/')
+@app.route('/signup')
 def signup():
     return render_template('signup.html')
 
