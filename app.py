@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request, jsonify
+from flask import Flask,render_template, request, jsonify, redirect
 import requests
 app = Flask(__name__)
 
@@ -16,10 +16,21 @@ def map_func():
 def signin():
     return render_template('signin.html')
 
-@app.route('/signup')
-def signup():
-    respose
-    return render_template('signup.html')
+@app.route('/signup_success',methods = ['POST', 'GET'])
+def signup_success():
+   if request.method == 'POST':
+      result = request.form
+
+      name=str(result.getlist('name')[0])
+      password=str(result.getlist('password')[0])
+
+      user = {
+          "name": name,
+          "password": password
+      }
+
+      requests.get("http://172.30.103.27:4242/signup", params=user)
+      return redirect("http://172.30.103.27:5001/")
 
 @app.route('/detail',methods = ['GET'])
 def detail():
