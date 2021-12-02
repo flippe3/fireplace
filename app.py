@@ -16,6 +16,11 @@ def map_func():
 def signin():
     return render_template('signin.html')
 
+@app.route('/signup')
+def signin():
+    return render_template('signup.html')
+
+
 @app.route('/signup_success',methods = ['POST', 'GET'])
 def signup_success():
    if request.method == 'POST':
