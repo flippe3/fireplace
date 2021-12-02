@@ -39,12 +39,12 @@ def sign_up():
     
     cursor.execute("USE firedb")
     cursor.execute(
-        "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", " + str(
-            hashed_password) + ", user, " + str(salt) ");")
+        "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(
+            hashed_password) + "\", \"user\", \"" + str(salt)+ "\");")
     mydb.commit()
     return jsonify(value="foo")
 
-@app.route("/signin")
+"""@app.route("/signin")
 def sign_in():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -53,14 +53,14 @@ def sign_in():
     password=request.args.get('password')
     # This is our implementation of salted passwords.
     
-    hashed_password = hashlib.sha256(password+salt).hexdigest()
+    #hashed_password = hashlib.sha256(password + salt).hexdigest()
     
     cursor.execute("USE firedb")
     cursor.execute("SELECT (salt, password) FROM users WHERE name=\""+str(username)"\";")
     result = cursor.fetchall()    
 
     mydb.commit()
-    return jsonify(value="foo")
+    return jsonify(value="foo")"""
 
 
 
