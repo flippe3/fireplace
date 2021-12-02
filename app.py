@@ -20,6 +20,10 @@ def signin():
 def signup():
     return render_template('signup.html')
 
+@app.route('/bootstrap.min.css')
+def bootstrap():
+    return render_template('templates/bootstrap.min.css')
+
 @app.route('/detail',methods = ['GET'])
 def detail():
    if request.method == 'GET':
