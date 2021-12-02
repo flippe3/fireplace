@@ -12,6 +12,14 @@ def map_func():
     namelist=data['name']
     return render_template('map.html', namelist=namelist, latlist=latlist, longlist=longlist)
 
+@app.route('/')
+def signin():
+    return render_template('signin.html')
+
+@app.route('/')
+def signup():
+    return render_template('signup.html')
+
 @app.route('/detail',methods = ['GET'])
 def detail():
    if request.method == 'GET':
