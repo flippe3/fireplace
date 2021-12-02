@@ -30,7 +30,7 @@ def sign_up():
     mydb = connect_db()
     cursor = mydb.cursor()
 
-    username=request.args.get('username')
+    username=request.args.get('name')
     password=request.args.get('password')
 
     # This is our implementation of salted passwords.
