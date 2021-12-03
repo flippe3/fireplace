@@ -14,7 +14,7 @@
   <li class="list-group-item">Longitude: {{ longitude }}</li>
 </ul>
 <form action = "http://130.240.200.57:5001/delete" method = "POST">
-    <p>id <input type = "text" name = "id" /></p>
+    <input type="hidden" name="id" value= {{ name }} />
     <button type="submit" class="btn btn-primary btn-lg">Delete</button>
 </form>
 </body>
