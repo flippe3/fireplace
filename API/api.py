@@ -2,8 +2,6 @@ from flask import Flask, jsonify, request
 import mysql.connector, os, hashlib
 
 app = Flask(__name__)
-lat = 65.633054
-long = 22.093550
 
 home_path = "/home/lensee-1"
 
@@ -61,8 +59,6 @@ def sign_in():
 
     mydb.commit()
     return jsonify(value="foo")"""
-
-
 
 @app.route("/create")
 def create():
