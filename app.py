@@ -71,7 +71,6 @@ def success():
 
       result = request.form
 
-
       name=str(result.getlist('name')[0])
       latitude=str(result.getlist('latitude')[0])
       longitude=str(result.getlist('longitude')[0])
