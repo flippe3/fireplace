@@ -82,11 +82,8 @@ def delete():
     cursor = mydb.cursor()
 
     id=request.args.get('id')
-    print(id)
-    print(type(id))
     cursor.execute("USE firedb")
     cursor.execute("DELETE FROM fireplaces WHERE name=\""+id+"\";")
-    print("SUCCESS IS ASSURED")
     mydb.commit()
     return jsonify(value="foo")
 
@@ -119,7 +116,6 @@ def detail():
 
     cursor.execute("USE firedb")
     id = request.args.get('id')
-    print(id)
     cursor.execute("SELECT * FROM fireplaces WHERE name=\""+ id +"\";")
 
     result = cursor.fetchall()
