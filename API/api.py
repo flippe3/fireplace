@@ -113,7 +113,7 @@ def return_fireplaces():
         lats.append(float(x[1]))
         longs.append(float(x[2]))
 
-    return jsonify(name=names,lat=lats,long=longs)#(long=long,lat=lat)
+    return jsonify(name=names,lat=lats,long=longs)
 
 
 @app.route("/detail")

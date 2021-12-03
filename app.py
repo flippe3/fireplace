@@ -21,7 +21,7 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/signup_success',methods = ['POST', 'GET'])
+@app.route('/signup_success',methods = 'POST')
 def signup_success():
    if request.method == 'POST':
       result = request.form
@@ -37,8 +37,8 @@ def signup_success():
       requests.get("http://172.30.103.27:4242/signup", params=user)
       return redirect("http://130.240.200.57:5001/")
 
-@app.route('/detail',methods = ['GET'])
-def detail():
+@app.route('/detail_admin',methods = ['GET'])
+def detail_admin():
    if request.method == 'GET':
        fireplace_id=request.args.get('id')
        id = {
@@ -49,7 +49,21 @@ def detail():
        name= data['name'][0]
        latitude= data["lat"][0]
        longitude= data["long"][0]
-       return render_template("detail.html", name=name,latitude=latitude,longitude=longitude)
+       return render_template("detail_admin.html", name=name,latitude=latitude,longitude=longitude)
+
+@app.route('/detail_user',methods = ['GET'])
+def detail_user():
+   if request.method == 'GET':
+       fireplace_id=request.args.get('id')
+       id = {
+           "id": fireplace_id
+       }
+       response = requests.get("http://172.30.103.27:4242/detail", params=id)
+       data = response.json()
+       name= data['name'][0]
+       latitude= data["lat"][0]
+       longitude= data["long"][0]
+       return render_template("detail_user.html", name=name,latitude=latitude,longitude=longitude)
 
 @app.route('/success',methods = ['POST', 'GET'])
 def success():
