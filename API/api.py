@@ -5,15 +5,18 @@ app = Flask(__name__)
 
 home_path = "/home/lensee-1"
 
+
 @app.route("/")
 def dummy_api():
-    return jsonify(long=long,lat=lat)
+    return jsonify(long=long, lat=lat)
+
 
 @app.route("/simulator")
 def simulator():
     f = open(home_path + "/.simulator_save", 'r')
     val = f.read().split('\n')[-2]
     return jsonify(value=val)
+
 
 def connect_db():
     mydb = mysql.connector.connect(
@@ -23,13 +26,14 @@ def connect_db():
     )
     return mydb
 
+
 @app.route("/signup")
 def sign_up():
     mydb = connect_db()
     cursor = mydb.cursor()
 
-    username=request.args.get('name')
-    password=request.args.get('password')
+    username = request.args.get('name')
+    password = request.args.get('password')
 
     # This is our implementation of salted passwords.
     salt = os.urandom(32)
@@ -38,9 +42,10 @@ def sign_up():
     cursor.execute("USE firedb")
     cursor.execute(
         "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(
-            hashed_password) + "\", \"user\", \"" + str(salt)+ "\");")
+            hashed_password) + "\", \"user\", \"" + str(salt) + "\");")
     mydb.commit()
     return jsonify(value="foo")
+
 
 """@app.route("/signin")
 def sign_in():
@@ -60,14 +65,15 @@ def sign_in():
     mydb.commit()
     return jsonify(value="foo")"""
 
+
 @app.route("/create")
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
 
-    name=request.args.get('name')
-    latitude=request.args.get('latitude')
-    longitude=request.args.get('longitude')
+    name = request.args.get('name')
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
 
     cursor.execute("USE firedb")
     cursor.execute(
@@ -76,16 +82,18 @@ def create():
     mydb.commit()
     return jsonify(value="foo")
 
+
 @app.route("/delete")
 def delete():
     mydb = connect_db()
     cursor = mydb.cursor()
 
-    id=request.args.get('id')
+    id = request.args.get('id')
     cursor.execute("USE firedb")
-    cursor.execute("DELETE FROM fireplaces WHERE name=\""+id+"\";")
+    cursor.execute("DELETE FROM fireplaces WHERE name=\"" + id + "\";")
     mydb.commit()
     return jsonify(value="foo")
+
 
 @app.route("/allfireplaces")
 def return_fireplaces():
@@ -98,7 +106,7 @@ def return_fireplaces():
 
     result = cursor.fetchall()
     names = []
-    lats =[]
+    lats = []
     longs = []
 
     for x in result:
@@ -106,7 +114,7 @@ def return_fireplaces():
         lats.append(float(x[1]))
         longs.append(float(x[2]))
 
-    return jsonify(name=names,lat=lats,long=longs)
+    return jsonify(name=names, lat=lats, long=longs)
 
 
 @app.route("/detail")
@@ -116,11 +124,11 @@ def detail():
 
     cursor.execute("USE firedb")
     id = request.args.get('id')
-    cursor.execute("SELECT * FROM fireplaces WHERE name=\""+ id +"\";")
+    cursor.execute("SELECT * FROM fireplaces WHERE name=\"" + id + "\";")
 
     result = cursor.fetchall()
     names = []
-    lats =[]
+    lats = []
     longs = []
 
     for x in result:
@@ -128,7 +136,8 @@ def detail():
         lats.append(float(x[1]))
         longs.append(float(x[2]))
 
-    return jsonify(name=names,lat=lats,long=longs)
+    return jsonify(name=names, lat=lats, long=longs)
+
 
 if __name__ == "__main__":
     app.run(host="172.30.103.27", port=4242)
