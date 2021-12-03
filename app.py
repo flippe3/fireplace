@@ -82,7 +82,7 @@ def success():
       }
 
       requests.get("http://172.30.103.27:4242/create", params=point)
-      return render_template("success.html")
+      return redirect("http://130.240.200.57:5001/")
   
 @app.route('/delete',methods = ['POST'])
 def delete():
@@ -96,7 +96,7 @@ def delete():
       print(id)
       requests.get("http://172.30.103.27:4242/delete", params=id)
 
-      return render_template("success.html")
+      return redirect("http://130.240.200.57:5001/")
 
 @app.route('/create')
 def create():
