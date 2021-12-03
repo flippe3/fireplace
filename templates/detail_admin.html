@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Success</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 </head>
 <body>
-{{ name }}
-{{ latitude }}
-{{ longitude }}
-
+<ul class="list-group">
+  <li class="list-group-item">Name: {{ name }}</li>
+  <li class="list-group-item">Latitude: {{ latitude }}</li>
+  <li class="list-group-item">Longitude: {{ longitude }}</li>
+</ul>
+<form action = "http://130.240.200.57:5001/delete" method = "POST">
+    <p>id <input type = "text" name = "id" /></p>
+    <button type="submit" class="btn btn-primary btn-lg">Delete</button>
+</form>
 </body>
 </html>
