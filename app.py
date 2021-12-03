@@ -21,7 +21,7 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/signup_success',methods = 'POST')
+@app.route('/signup_success',methods = ['POST'])
 def signup_success():
    if request.method == 'POST':
       result = request.form
