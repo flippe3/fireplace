@@ -40,6 +40,23 @@ def signup_success():
         requests.get("http://172.30.103.27:4242/signup", params=user)
         return redirect("http://130.240.200.57:5001/")
 
+@app.route('/signin_success', methods=['POST'])
+def signin_success():
+    if request.method == 'POST':
+        result = request.form
+
+        name = str(result.getlist('name')[0])
+        password = str(result.getlist('password')[0])
+
+        user = {
+            "name": name,
+            "password": password
+        }
+
+        requests.get("http://172.30.103.27:4242/signin", params=user)
+        return redirect("http://130.240.200.57:5001/")
+
+
 
 @app.route('/detail_admin', methods=['GET'])
 def detail_admin():

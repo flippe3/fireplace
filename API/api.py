@@ -47,24 +47,24 @@ def sign_up():
     return jsonify(value="foo")
 
 
-"""@app.route("/signin")
+@app.route("/signin")
 def sign_in():
     mydb = connect_db()
     cursor = mydb.cursor()
 
-    username=request.args.get('username')
-    password=request.args.get('password')
+    username = request.args.get('name')
+    password = request.args.get('password')
+
     # This is our implementation of salted passwords.
-    
-    #hashed_password = hashlib.sha256(password + salt).hexdigest()
-    
-    cursor.execute("USE firedb")
-    cursor.execute("SELECT (salt, password) FROM users WHERE name=\""+str(username)"\";")
-    result = cursor.fetchall()    
+#    salt = os.urandom(32)
+#    hashed_password = hashlib.sha256(password.encode() + salt).hexdigest()
 
-    mydb.commit()
-    return jsonify(value="foo")"""
-
+#    cursor.execute("USE firedb")
+#    cursor.execute(
+#        "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(
+#            hashed_password) + "\", \"user\", \"" + str(salt) + "\");")
+#    mydb.commit()
+    return jsonify(value="foo")
 
 @app.route("/create")
 def create():
