@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request
-import mysql.connector, os, hashlib
+import mysql.connector, os, hashlib, secrets
 
 app = Flask(__name__)
 
-home_path = "/home/lensee-1"
+home_path = "/Users/fleip"
 
 
 @app.route("/")
@@ -36,15 +36,21 @@ def sign_up():
     password = request.args.get('password')
 
     # This is our implementation of salted passwords.
-    salt = os.urandom(32)
-    hashed_password = hashlib.sha256(password.encode() + salt).hexdigest()
+    salt = secrets.token_hex(16)
+    hashed_password = hashlib.sha256(password.encode() + salt.encode()).hexdigest()
 
     cursor.execute("USE firedb")
-    cursor.execute(
-        "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(
-            hashed_password) + "\", \"user\", \"" + str(salt) + "\");")
-    mydb.commit()
-    return jsonify(value="foo")
+    cursor.execute("SELECT * FROM users WHERE name=\"" + username + "\";")
+    exists = cursor.fetchone()
+
+    # Don't allow same usernames.
+    if exists == None:
+        cursor.execute(
+            "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(hashed_password) + "\", \"user\", \"" + str(salt) + "\");")
+        mydb.commit()
+        return jsonify(value="foo"), 200
+    else:
+        return jsonify(value="foo"), 401
 
 
 @app.route("/signin")
@@ -56,15 +62,18 @@ def sign_in():
     password = request.args.get('password')
 
     # This is our implementation of salted passwords.
-#    salt = os.urandom(32)
-#    hashed_password = hashlib.sha256(password.encode() + salt).hexdigest()
-
-#    cursor.execute("USE firedb")
-#    cursor.execute(
-#        "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(
-#            hashed_password) + "\", \"user\", \"" + str(salt) + "\");")
-#    mydb.commit()
-    return jsonify(value="foo")
+    cursor.execute("USE firedb")
+    cursor.execute("SELECT salt,password FROM users WHERE name=\"" + username + "\";")
+    data = cursor.fetchone()
+    if data != None:
+        salt, hashed_password = data[0], data[1]
+        test_hash = hashlib.sha256(password.encode() + salt.encode()).hexdigest()
+        if test_hash == hashed_password:
+            return jsonify(value="foo"), 200
+        else:
+            return jsonify(value="foo"), 501
+    else:
+        return jsonify(value="foo"), 501
 
 @app.route("/create")
 def create():
@@ -137,6 +146,29 @@ def detail():
         longs.append(float(x[2]))
 
     return jsonify(name=names, lat=lats, long=longs)
+
+@app.route("/token")
+def token():
+    mydb = connect_db()
+    cursor = mydb.cursor()
+
+    username = request.args.get('name')
+    password = request.args.get('password')
+
+    # This is our implementation of salted passwords.
+    cursor.execute("USE firedb")
+    cursor.execute("SELECT salt,password FROM users WHERE name=\"" + username + "\";")
+    data = cursor.fetchone()
+
+    if data != None:
+        salt, hashed_password = data[0], data[1]
+        test_hash = hashlib.sha256(password.encode() + salt.encode()).hexdigest()
+        if test_hash == hashed_password:
+            return jsonify(value=hashed_password), 200
+        else:
+            return jsonify(value="foo"), 501
+    else:
+        return jsonify(value="foo"), 501
 
 
 if __name__ == "__main__":

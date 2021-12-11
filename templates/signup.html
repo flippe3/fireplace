@@ -11,7 +11,8 @@
 </head>
 
 <body class="text-center p-3 mb-2 bg-dark text-white">
-<div class="d-flex justify-content-center align-items-center">
+    {% block content %}
+    <div class="d-flex justify-content-center align-items-center">
     <form class="form-signup" action="http://130.240.200.57:5001/signup_success" method="POST">
         <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
         <label for="name" class="sr-only">Name</label>
@@ -19,7 +20,23 @@
         <label for="password" class="sr-only">Password</label>
         <input type="password" name="password" class="form-control mb-1" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+        {% if success %}
+        {% if success=="true" %}
+        <div class="alert alert-success alert-dismissible mt-2">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Successfully created an account.</strong>
+        </div>
+          {% else %}
+          <div class="alert alert-danger alert-dismissible mt-2">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Failure to create account</strong>
+            <strong>username already exists.</strong>
+          </div>
+        </div>
+        {% endif %}
+		{% endif %}
     </form>
-</div>
+    </div>
+    {% endblock %}
 </body>
 </html>
