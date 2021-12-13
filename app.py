@@ -8,11 +8,13 @@ app = Flask(__name__)
 def map_func():
     response = requests.get("http://172.30.103.27:4242/allfireplaces")
     data = response.json()
+    idlist = data['id']
     latlist = data['lat']
     longlist = data['long']
     namelist = data['name']
+    woodlist = data['wood']
     cookie = request.cookies.get('userid')
-    return render_template('map.html', namelist=namelist, latlist=latlist, longlist=longlist, cookie=cookie)
+    return render_template('map.html', namelist=namelist, idlist=idlist, latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie)
 
 
 @app.route('/signin')
@@ -108,10 +110,12 @@ def detail_admin():
         }
         response = requests.get("http://172.30.103.27:4242/detail", params=id)
         data = response.json()
+        id = data['id'][0]
         name = data['name'][0]
         latitude = data["lat"][0]
         longitude = data["long"][0]
-        return render_template("detail_admin.html", name=name, latitude=latitude, longitude=longitude)
+        wood = data['wood'][0]
+        return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
 
 # @app.route('/setcookie', methods = ['POST', 'GET'])
 # def setcookie():
@@ -132,10 +136,12 @@ def detail_user():
         }
         response = requests.get("http://172.30.103.27:4242/detail", params=id)
         data = response.json()
+        id = data['id'][0]
         name = data['name'][0]
         latitude = data["lat"][0]
         longitude = data["long"][0]
-        return render_template("detail_user.html", name=name, latitude=latitude, longitude=longitude)
+        wood = data['wood'][0]
+        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
 
 
 @app.route('/success', methods=['POST', 'GET'])

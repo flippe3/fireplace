@@ -46,7 +46,7 @@ function addInfoBubble(map) {
 
   {%for i in range(0, latlist|length)%}
      addMarkerToGroup(group, {lat:{{ latlist[i] }}, lng:{{ longlist[i] }}},
-    '<div><a href=/detail_user?id={{ namelist[i] }}>{{ namelist[i] }}</a></div>');
+    '<div><a href=/detail_user?id={{ idlist[i] }}>{{ idlist[i] }}</a></div>');
   {%endfor%}
 }
 

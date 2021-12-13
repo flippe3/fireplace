@@ -77,11 +77,12 @@ def create():
     name = request.args.get('name')
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
+    wood = request.args.get('wood')
 
     cursor.execute("USE firedb")
     cursor.execute(
-        "INSERT INTO fireplaces (name, latitude, longitude) VALUES (\"" + str(name) + "\", " + str(
-            latitude) + ", " + str(longitude) + ");")
+        "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
+            latitude) + ", " + str(longitude)+ ", " + str(wood) + ");")
     mydb.commit()
     return "", 204
 
@@ -93,7 +94,7 @@ def delete():
 
     id = request.args.get('id')
     cursor.execute("USE firedb")
-    cursor.execute("DELETE FROM fireplaces WHERE name=\"" + id + "\";")
+    cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
     mydb.commit()
     return "", 204
 
@@ -108,16 +109,20 @@ def return_fireplaces():
     cursor.execute("SELECT * FROM fireplaces")
 
     result = cursor.fetchall()
+    ids = []
     names = []
     lats = []
     longs = []
+    woods = []
 
     for x in result:
-        names.append(x[0])
-        lats.append(float(x[1]))
-        longs.append(float(x[2]))
+        ids.append(x[0])
+        names.append(x[1])
+        lats.append(float(x[2]))
+        longs.append(float(x[3]))
+        woods.append(x[4])
 
-    return jsonify(name=names, lat=lats, long=longs)
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
 
 
 @app.route("/detail")
@@ -127,19 +132,23 @@ def detail():
 
     cursor.execute("USE firedb")
     id = request.args.get('id')
-    cursor.execute("SELECT * FROM fireplaces WHERE name=\"" + id + "\";")
+    cursor.execute("SELECT * FROM fireplaces WHERE id=\"" + id + "\";")
 
     result = cursor.fetchall()
+    ids = []
     names = []
     lats = []
     longs = []
+    woods = []
 
     for x in result:
-        names.append(x[0])
-        lats.append(float(x[1]))
-        longs.append(float(x[2]))
+        ids.append(x[0])
+        names.append(x[1])
+        lats.append(float(x[2]))
+        longs.append(float(x[3]))
+        woods.append(x[4])
 
-    return jsonify(name=names, lat=lats, long=longs)
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
 
 @app.route("/token")
 def token():
