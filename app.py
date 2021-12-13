@@ -115,6 +115,10 @@ def detail_admin():
         latitude = data["lat"][0]
         longitude = data["long"][0]
         wood = data['wood'][0]
+        if wood ==1:
+            wood = "yes"
+        else:
+            wood = "false"
         return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
 
 # @app.route('/setcookie', methods = ['POST', 'GET'])
@@ -141,6 +145,10 @@ def detail_user():
         latitude = data["lat"][0]
         longitude = data["long"][0]
         wood = data['wood'][0]
+        if wood ==1:
+            wood = "yes"
+        else:
+            wood = "false"
         return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
 
 
