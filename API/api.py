@@ -77,7 +77,7 @@ def create():
     name = request.args.get('name')
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
-    wood = request.args.get('wood')
+    wood = request.args.get('wood').upper()
 
     cursor.execute("USE firedb")
     cursor.execute(
