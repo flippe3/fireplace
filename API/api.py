@@ -5,12 +5,6 @@ app = Flask(__name__)
 
 home_path = "/Users/fleip"
 
-
-@app.route("/")
-def dummy_api():
-    return jsonify(long=long, lat=lat)
-
-
 @app.route("/simulator")
 def simulator():
     f = open(home_path + "/.simulator_save", 'r')
@@ -48,9 +42,9 @@ def sign_up():
         cursor.execute(
             "INSERT INTO users (name, password, role, salt) VALUES (\"" + str(username) + "\", \"" + str(hashed_password) + "\", \"user\", \"" + str(salt) + "\");")
         mydb.commit()
-        return jsonify(value="foo"), 200
+        return "", 200
     else:
-        return jsonify(value="foo"), 401
+        return "", 401
 
 
 @app.route("/signin")
@@ -69,11 +63,11 @@ def sign_in():
         salt, hashed_password = data[0], data[1]
         test_hash = hashlib.sha256(password.encode() + salt.encode()).hexdigest()
         if test_hash == hashed_password:
-            return jsonify(value="foo"), 200
+            return "", 200
         else:
-            return jsonify(value="foo"), 501
+            return "", 501
     else:
-        return jsonify(value="foo"), 501
+        return "", 501
 
 @app.route("/create")
 def create():
@@ -89,7 +83,7 @@ def create():
         "INSERT INTO fireplaces (name, latitude, longitude) VALUES (\"" + str(name) + "\", " + str(
             latitude) + ", " + str(longitude) + ");")
     mydb.commit()
-    return jsonify(value="foo")
+    return "", 204
 
 
 @app.route("/delete")
@@ -101,7 +95,7 @@ def delete():
     cursor.execute("USE firedb")
     cursor.execute("DELETE FROM fireplaces WHERE name=\"" + id + "\";")
     mydb.commit()
-    return jsonify(value="foo")
+    return "", 204
 
 
 @app.route("/allfireplaces")
@@ -164,11 +158,11 @@ def token():
         salt, hashed_password = data[0], data[1]
         test_hash = hashlib.sha256(password.encode() + salt.encode()).hexdigest()
         if test_hash == hashed_password:
-            return jsonify(value=hashed_password), 200
+            return "", 200
         else:
-            return jsonify(value="foo"), 501
+            return "", 501
     else:
-        return jsonify(value="foo"), 501
+        return "", 501
 
 
 if __name__ == "__main__":
