@@ -152,11 +152,13 @@ def success():
         name = str(result.getlist('name')[0])
         latitude = str(result.getlist('latitude')[0])
         longitude = str(result.getlist('longitude')[0])
+        wood = str(result.getlist('wood')[0])
 
         point = {
             "name": name,
             "latitude": latitude,
-            "longitude": longitude
+            "longitude": longitude,
+            "wood": wood
         }
 
         requests.get("http://172.30.103.27:4242/create", params=point)
