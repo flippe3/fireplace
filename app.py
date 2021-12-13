@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def map_func():
-    print('here')
     response = requests.get("http://172.30.103.27:4242/allfireplaces")
     data = response.json()
     latlist = data['lat']
