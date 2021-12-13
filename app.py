@@ -14,7 +14,7 @@ def map_func():
     namelist = data['name']
     woodlist = data['wood']
     cookie = request.cookies.get('userid')
-    return render_template('map.html', namelist=namelist, idlist=idlist, latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie)
+    return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie)
 
 
 @app.route('/signin')
