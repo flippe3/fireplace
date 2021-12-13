@@ -173,7 +173,6 @@ def delete():
         id = {
             "id": id
         }
-        print(id)
         requests.get("http://172.30.103.27:4242/delete", params=id)
 
         return redirect("http://130.240.200.57:5001/")
