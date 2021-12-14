@@ -3,7 +3,7 @@ import mysql.connector, os, hashlib, secrets
 
 app = Flask(__name__)
 
-home_path = "/Users/fleip"
+home_path = "/Users/lensee-1"
 
 @app.route("/simulator")
 def simulator():
@@ -86,7 +86,7 @@ def create():
     cursor.execute("USE firedb")
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
-            latitude) + ", " + str(longitude)+ ", " + str(wood) + ");")
+            latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
     mydb.commit()
     return "", 204
 
