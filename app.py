@@ -67,7 +67,7 @@ def signup_success():
         name = str(result.getlist('name')[0])
         password = str(result.getlist('password')[0])
 
-        token = jwt.encode({'user': name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=600)}, app.config['SECRET_KEY'], algorithm="HS256")
+        token = str(jwt.encode({'user': name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=120)}, app.config['SECRET_KEY'], algorithm="HS256"))
         user = {
             "name": name,
             "password": password,
