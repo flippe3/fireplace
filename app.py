@@ -193,10 +193,10 @@ def detail():
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
         role = cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
-        if role =="user":
-            return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
         if role =="admin":
             return redirect("http://130.240.200.57:5001/detail_admin?id=" + id)
+        else:
+            return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
 
 
 @app.route('/delete', methods=['POST'])
