@@ -22,7 +22,8 @@ def token_current_user():
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
-    token = cursor.execute("SELECT token FROM users WHERE name=\"" + userid + "\";")
+    cursor.execute("SELECT token FROM users WHERE name=\"" + userid + "\";")
+    token = cursor.fetchall()[0]
     return token
 
 @app.route('/')
