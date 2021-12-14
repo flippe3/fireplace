@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 import mysql.connector, os, hashlib, secrets
 from functools import wraps
 import jwt
+import sys
+sys.path.append("..")
 from simulator import get_data
 
 app = Flask(__name__)
