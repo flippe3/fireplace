@@ -168,10 +168,10 @@ def success():
         name = str(result.getlist('name')[0])
         latitude = str(result.getlist('latitude')[0])
         longitude = str(result.getlist('longitude')[0])
-        if str(result.getlist('wood')[0]) != None:
+        try:
             wood = str(result.getlist('wood')[0])
-        else:
-            wood = 'off'
+        except:
+            wood="off"
 
         point = {
             "name": name,
