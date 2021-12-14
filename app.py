@@ -71,7 +71,7 @@ def signup_success():
         user = {
             "name": name,
             "password": password,
-            "token":token
+            "token": token
         }
 
         response = requests.get("http://172.30.103.27:4242/signup", params=user)
