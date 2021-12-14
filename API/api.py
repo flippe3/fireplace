@@ -61,7 +61,7 @@ def sign_up():
     # Don't allow same usernames.
     if exists == None:
         cursor.execute(
-            "INSERT INTO users (name, password, role, salt, token) VALUES (\"" + str(username) + "\", \"" + str(hashed_password) + "\", \"user\", \"" + str(salt) + "\",\""+str(token)+"\");")
+            "INSERT INTO users (name, password, role, salt, token) VALUES (\"" + str(username) + "\", \"" + str(hashed_password) + "\", \"user\", \"" + str(salt) + "\",\""+ str(token)+"\");")
         mydb.commit()
         return "", 200
     else:

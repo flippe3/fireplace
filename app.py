@@ -1,3 +1,5 @@
+import sys
+
 import jwt
 from flask import Flask, render_template, request, jsonify, redirect, make_response
 import requests
@@ -221,6 +223,7 @@ def delete():
             "id": id,
             "token": token_current_user()
         }
+        print(token_current_user(),file=sys.stderr)
         requests.get("http://172.30.103.27:4242/delete", params=id)
 
         return redirect("http://130.240.200.57:5001/")
