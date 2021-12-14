@@ -1,5 +1,5 @@
 import sys
-
+import logging
 import jwt
 from flask import Flask, render_template, request, jsonify, redirect, make_response
 import requests
@@ -23,6 +23,7 @@ def token_current_user():
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
     token = cursor.execute("SELECT token FROM users WHERE name=\"" + userid + "\";")
+    app.logger.warning(token)
     return token
 
 @app.route('/')
