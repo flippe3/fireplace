@@ -8,7 +8,7 @@ f = open(home_path + "/.weather_key", 'r')
 api_key = f.read()
 
 
-def get_weather(lat, lon, time):
+def get_weather(lat, lon, time, api_key):
     url = "http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s" % (api_key, lat, lon)
     response = requests.get(url)
     data = json.loads(response.text)
@@ -44,7 +44,7 @@ def calculate(weather):
 
 
 def get_data(lat, lon):
-    code, weather = get_weather(lat, lon, datetime.utcnow().hour)
+    code, weather = get_weather(lat, lon, datetime.utcnow().hour, api_key)
     if code == 200:
         return weather
     else:

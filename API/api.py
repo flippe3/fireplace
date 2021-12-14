@@ -2,11 +2,15 @@ from flask import Flask, jsonify, request
 import mysql.connector, os, hashlib, secrets
 from functools import wraps
 import jwt
+from simulator import get_data
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey'
 
-home_path = "/Users/lensee-1"
+home_path = "/home/lensee-1"
+f = open(home_path + "/.weather_key", 'r')
+api_key = f.read()
+
 
 def token_required(f):
     @wraps(f)
@@ -168,6 +172,12 @@ def detail():
     longs = []
     woods = []
 
+    temp = []
+    wind = []
+    cond = []
+    sim = []
+    
+    
     for x in result:
         ids.append(x[0])
         names.append(x[1])
@@ -175,7 +185,16 @@ def detail():
         longs.append(float(x[3]))
         woods.append(x[4])
 
-    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
+    # get_data in the simulator
+    weather = get_data(lats[-1], longs[-1], api_key)
+    simulator = get_simulator()
+
+    temp.append(weather['temp'])
+    wind.append(weather['wind'])
+    cond.append(weather['condition'])
+    sim.append(simulator)
+        
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond, sim=sim)
 
 @app.route("/token")
 def token():
