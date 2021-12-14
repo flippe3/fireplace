@@ -191,7 +191,7 @@ def detail():
         userid = request.cookies.get('userid')
         mydb = connect_db()
         cursor = mydb.cursor()
-
+        cursor.execute("USE firedb")
         role = cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
         if role =="user":
             return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
