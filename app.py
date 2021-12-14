@@ -88,6 +88,17 @@ def signup_success():
 @app.route('/get_token', methods=['POST'])
 def get_token():
     if request.method == 'POST':
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("USE firedb")
+        userid = request.cookies.get('userid')
+        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=120)}, app.config['SECRET_KEY'], algorithm="HS256"))
+        cursor.execute("UPDATE users SET token = "+ token +" WHERE userid = "+ userid +";")
+
+
+
+
+
         result = request.form
         name = request.cookies.get('userid')
         password = str(result.getlist('password')[0])
