@@ -1,8 +1,16 @@
 from flask import Flask, render_template, request, jsonify, redirect, make_response
 import requests
+import mysql.connector
 
 app = Flask(__name__)
 
+def connect_db():
+    mydb = mysql.connector.connect(
+        host="127.0.0.1",
+        user="root",
+        password="root"
+    )
+    return mydb
 
 @app.route('/')
 def map_func():
@@ -171,6 +179,21 @@ def success():
 
         requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
+
+
+@app.route("/detail")
+def detail():
+    if request.method == 'GET':
+        id = request.args.get('id')
+        userid = request.cookies.get('userid')
+        mydb = connect_db()
+        cursor = mydb.cursor()
+
+        role = cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
+        if role =="user":
+            return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
+        if role =="admin":
+            return redirect("http://130.240.200.57:5001/detail_admin?id=" + id)
 
 
 @app.route('/delete', methods=['POST'])
