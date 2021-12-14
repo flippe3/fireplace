@@ -3,7 +3,7 @@ import mysql.connector, os, hashlib, secrets
 from functools import wraps
 import jwt
 import sys
-sys.path.append("..")
+sys.path.append("/home/lensee-1/jenkins_workspace/fireplace")
 from simulator import get_data
 
 app = Flask(__name__)
