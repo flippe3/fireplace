@@ -1,8 +1,11 @@
+import jwt
 from flask import Flask, render_template, request, jsonify, redirect, make_response
 import requests
 import mysql.connector
+import datetime
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'thisisthesecretkey'
 
 def connect_db():
     mydb = mysql.connector.connect(
@@ -64,9 +67,11 @@ def signup_success():
         name = str(result.getlist('name')[0])
         password = str(result.getlist('password')[0])
 
+        token = jwt.encode({'user': name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=600)}, app.config['SECRET_KEY'], algorithm="HS256")
         user = {
             "name": name,
-            "password": password
+            "password": password,
+            "token":token
         }
 
         response = requests.get("http://172.30.103.27:4242/signup", params=user)

@@ -4,6 +4,7 @@ from functools import wraps
 import jwt
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'thisisthesecretkey'
 
 home_path = "/Users/lensee-1"
 
