@@ -94,25 +94,12 @@ def get_token():
         userid = request.cookies.get('userid')
         token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=120)}, app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = "+ token +" WHERE userid = "+ userid +";")
+        return redirect("http://130.240.200.57:5001/")
 
 
 
 
 
-        result = request.form
-        name = request.cookies.get('userid')
-        password = str(result.getlist('password')[0])
-
-        user = {
-            "name": name, 
-            "password": password
-        }
-
-        response = requests.get("http://172.30.103.27:4242/token", params=user)
-        if response.status_code == 200:
-            return render_template("account.html", cookie=name, success=response.json()['value'])
-        else:
-            return render_template("account.html", cookie=name, failed=True)
 
 
 @app.route('/signin_success', methods=['POST'])
