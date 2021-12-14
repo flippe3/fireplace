@@ -44,7 +44,7 @@ def signin():
     return render_template('signin.html')
 
 @app.route('/account')
-def account():
+def accounOAt():
     cookie = request.cookies.get('userid')
     return render_template('account.html', cookie=cookie)
 
@@ -90,7 +90,7 @@ def get_token():
     if request.method == 'POST':
         mydb = connect_db()
         cursor = mydb.cursor()
-        cursor.execute("USE firedb")
+        curs or.execute("USE firedb")
         userid = request.cookies.get('userid')
         token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=120)}, app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = \""+ token +"\" WHERE name = \""+ userid +"\";")
@@ -142,17 +142,7 @@ def detail_admin():
         else:
             wood = "false"
         return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
-
-# @app.route('/setcookie', methods = ['POST', 'GET'])
-# def setcookie():
-#    if request.method == 'POST':
-#     user = request.form['name']
     
-#     resp = make_response(render_template('readcookie.html'))
-#     resp.set_cookie('userID', user)
-   
-#    return resp
-
 @app.route('/detail_user', methods=['GET'])
 def detail_user():
     if request.method == 'GET':
@@ -161,17 +151,27 @@ def detail_user():
             "id": fireplace_id
         }
         response = requests.get("http://172.30.103.27:4242/detail", params=id)
+
         data = response.json()
         id = data['id'][0]
         name = data['name'][0]
         latitude = data["lat"][0]
         longitude = data["long"][0]
         wood = data['wood'][0]
-        if wood ==1:
+        if wood == 1:
             wood = "yes"
         else:
             wood = "false"
-        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
+
+        # Weather data 
+        temp = data['temp'][0]
+        wind = data['wind'][0]
+        cond = data['cond'][0]
+
+        # Simulator
+#        sim = data['sim'][0]
+
+        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond)
 
 
 @app.route('/success', methods=['POST', 'GET'])

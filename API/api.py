@@ -189,14 +189,12 @@ def detail():
 
     # get_data in the simulator
     weather = get_data(lats[-1], longs[-1], api_key)
-    simulator = get_simulator()
 
     temp.append(weather['temp'])
     wind.append(weather['wind'])
     cond.append(weather['condition'])
-    sim.append(simulator)
         
-    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond, sim=sim)
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond)
 
 @app.route("/token")
 def token():
