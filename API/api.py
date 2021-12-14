@@ -48,6 +48,7 @@ def sign_up():
 
     username = request.args.get('name')
     password = request.args.get('password')
+    token = request.args.get('token')
 
     # This is our implementation of salted passwords.
     salt = secrets.token_hex(16)
