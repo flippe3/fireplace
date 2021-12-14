@@ -1,9 +1,28 @@
 from flask import Flask, jsonify, request
 import mysql.connector, os, hashlib, secrets
+from functools import wraps
+import jwt
 
 app = Flask(__name__)
 
 home_path = "/Users/lensee-1"
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+
+        if not token:
+            return jsonify({'message' : 'Token is missing!'}), 403
+
+        try:
+            jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+        except:
+            return jsonify({'message' : 'Token is tinvalid!'}), 403
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 @app.route("/simulator")
 def simulator():
@@ -70,6 +89,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
+@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -92,6 +112,7 @@ def create():
 
 
 @app.route("/delete")
+@token_required
 def delete():
     mydb = connect_db()
     cursor = mydb.cursor()

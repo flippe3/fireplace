@@ -12,6 +12,14 @@ def connect_db():
     )
     return mydb
 
+def token_current_user():
+    userid = request.cookies.get('userid')
+    mydb = connect_db()
+    cursor = mydb.cursor()
+    cursor.execute("USE firedb")
+    token = cursor.execute("SELECT token FROM users WHERE name=\"" + userid + "\";")
+    return token
+
 @app.route('/')
 def map_func():
     response = requests.get("http://172.30.103.27:4242/allfireplaces")
@@ -33,7 +41,6 @@ def signin():
 def account():
     cookie = request.cookies.get('userid')
     return render_template('account.html', cookie=cookie)
-
 
 @app.route('/signup')
 def signup():
@@ -177,7 +184,8 @@ def success():
             "name": name,
             "latitude": latitude,
             "longitude": longitude,
-            "wood": wood
+            "wood": wood,
+            "token": token_current_user()
         }
 
         requests.get("http://172.30.103.27:4242/create", params=point)
@@ -205,7 +213,8 @@ def delete():
         result = request.form
         id = str(result.getlist('id')[0])
         id = {
-            "id": id
+            "id": id,
+            "token": token_current_user()
         }
         requests.get("http://172.30.103.27:4242/delete", params=id)
 
