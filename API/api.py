@@ -19,14 +19,16 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.args.get('token')
-
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(token) + "\");")
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
 
         try:
             jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
         except:
-            return jsonify({'message' : 'Token is tinvalid!'}), 403
+            return jsonify({'message' : 'Token is invalid!'}), 403
 
         return f(*args, **kwargs)
 
@@ -109,7 +111,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-#@token_required
+@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -121,7 +123,6 @@ def create():
         wood = "TRUE"
     else:
         wood = "FALSE"
-    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     cursor.execute("USE firedb;")
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
