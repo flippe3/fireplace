@@ -77,15 +77,19 @@ def sign_up():
         return "", 401
 
 @app.route("/upload_file")
-@token_required
+#@token_required
 def upload_file():
     filename = request.args.get('filename')
     fireplace_id = request.args.get('fireplace_id')
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
-    cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
-    mydb.commit()
+    try:
+        jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
+        cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
+        mydb.commit()
+    except:
+        pass
     return "", 204
 
 @app.route("/signin")
@@ -111,7 +115,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-@token_required
+#@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -124,22 +128,30 @@ def create():
     else:
         wood = "FALSE"
     cursor.execute("USE firedb;")
-    cursor.execute(
-        "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
-            latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
+    try:
+        jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
+        cursor.execute(
+            "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
+                latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
+    except:
+        pass
     mydb.commit()
     return "", 204
 
 
 @app.route("/delete")
-@token_required
+#@token_required
 def delete():
     mydb = connect_db()
     cursor = mydb.cursor()
 
     id = request.args.get('id')
     cursor.execute("USE firedb")
-    cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
+    try:
+        jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
+        cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
+    except:
+        pass
     mydb.commit()
     return "", 204
 
