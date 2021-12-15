@@ -1,7 +1,7 @@
 import sys, os
 import logging
 import jwt
-from flask import Flask, render_template, request, jsonify, redirect, make_response, flash
+from flask import Flask, render_template, request, jsonify, redirect, make_response, flash, url_for
 import requests
 import mysql.connector
 import datetime
@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey'
-UPLOAD_FOLDER = '/home/lensee-1/images/'
+UPLOAD_FOLDER = '/home/lensee-1/jenkins_workspace/fireplace/static/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -60,6 +60,12 @@ def upload_file():
         if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                fireplace_id = str(request.referrer).split('=')[1]
+                mydb = connect_db()
+                cursor = mydb.cursor()
+                cursor.execute("USE firedb")
+                cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + fireplace_id + "\";")
+                mydb.commit()
                 return redirect(request.referrer)
     return redirect(request.referrer, upload="failed")
 
@@ -193,7 +199,13 @@ def detail_user():
         print(sim_data)
         sim = float(sim_data['value']) * 100
 
-        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond, sim=sim)
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("USE firedb")
+        cursor.execute("SELECT image FROM fireplaces WHERE id=\"" + id + "\";")
+        image = cursor.fetchone()
+
+        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond, sim=sim, img=image)
 
 
 @app.route('/success', methods=['POST', 'GET'])
