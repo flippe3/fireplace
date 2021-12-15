@@ -176,6 +176,21 @@ def detail_admin():
             wood = "false"
         return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
     
+@app.route('/simulator_conf')
+def simulator_conf():
+    return render_template('simulator_conf.html')
+
+@app.route('/simulator_conf_success', methods=['POST'])
+def simulator_conf_success():
+    if request.method == 'POST':
+        #username = request.cookies.get('userid')                                                                              
+        form_data = request.form
+        time = form_data.getlist('time')[0]
+        time = time.replace(":", "")
+        user_time = {"time": time}
+        do_write = requests.get("http://172.30.103.27:4242/simulator_config_write", params=user_time)
+        return redirect("http://130.240.200.57:5001/")
+
 @app.route('/detail_user', methods=['GET'])
 def detail_user():
     if request.method == 'GET':

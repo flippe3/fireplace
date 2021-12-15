@@ -121,7 +121,7 @@ def create():
 
 
 @app.route("/delete")
-#@token_required
+@token_required
 def delete():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -132,6 +132,14 @@ def delete():
     mydb.commit()
     return "", 204
 
+@app.route("/simulator_config_write")
+def simulator_config_write():
+    time = request.args.get('time')
+    print(time)
+    f = open(home_path + "/.simulator_conf", 'w')
+    f.write(str(time))
+    f.close()
+    return "", 200
 
 @app.route("/allfireplaces")
 def return_fireplaces():
@@ -158,17 +166,6 @@ def return_fireplaces():
 
     return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
 
-@app.route("/upload_file")
-#@token_required
-def upload_file():
-    filename = request.args.get('filename')
-    fireplace_id = request.args.get('fireplace_id')
-    mydb = connect_db()
-    cursor = mydb.cursor()
-    cursor.execute("USE firedb")
-    cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
-    mydb.commit()
-    return "", 204
 
 @app.route("/detail")
 def detail():
