@@ -141,7 +141,7 @@ def delete():
     cursor = mydb.cursor()
     id = request.args.get('id')
     cursor.execute("USE firedb")
-    cursor.execute("DELETE FROM fireplaces WHERE id =" + id + ";")
+    cursor.execute("DELETE FROM fireplaces WHERE id =" + str(id) + ";")
     mydb.commit()
     return "", 204
 
