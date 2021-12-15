@@ -64,7 +64,7 @@ def upload_file():
                 mydb = connect_db()
                 cursor = mydb.cursor()
                 cursor.execute("USE firedb")
-                cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + fireplace_id + "\";")
+                cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + int(fireplace_id) + "\";")
                 mydb.commit()
                 return redirect(request.referrer)
     return redirect(request.referrer, upload="failed")
