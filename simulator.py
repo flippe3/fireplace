@@ -21,6 +21,10 @@ def get_weather(lat, lon, time, api_key):
 def normal_dist(percentage):
     return percentage + (numpy.random.normal(0, 0.01, 1))
 
+def read_conf():
+    conf_file = open(home_path + "/.simulator_conf", 'r')
+    val = conf_file.read()
+    return val
 
 def calculate(weather):
     # Weekday needs to be added to check if its a weekday.
@@ -35,13 +39,17 @@ def calculate(weather):
     sunny = condition == 1000
     is_day = weather["current"]["is_day"]
 
-    percentage = 0
-    if int(time) > 8 and int(time) < 21:
-        percentage = (0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))
-    else:
-        percentage = ((0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))) * 0.3
-    return percentage
+    conf = read_conf()
 
+    if conf == 0:
+        percentage = 0
+        if int(time) > 8 and int(time) < 21:
+            percentage = (0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))
+        else:
+            percentage = ((0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))) * 0.3
+        return percentage
+    else:
+        return 2.0
 
 def get_data(lat, lon, api_key):
     code, weather = get_weather(lat, lon, datetime.utcnow().hour, api_key)
