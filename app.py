@@ -275,12 +275,11 @@ def delete():
     if request.method == 'POST':
         result = request.form
         id = str(result.getlist('id')[0])
-        id = {
-            "id": id,
-            "token": token_current_user()
+        ids = {
+            "id": id
         }
         print(token_current_user(),file=sys.stderr)
-        requests.get("http://172.30.103.27:4242/delete", params=id)
+        requests.get("http://172.30.103.27:4242/delete", params=ids)
 
         return redirect("http://130.240.200.57:5001/")
 
