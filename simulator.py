@@ -43,7 +43,7 @@ def calculate(weather):
     return percentage
 
 
-def get_data(lat, lon):
+def get_data(lat, lon, api_key):
     code, weather = get_weather(lat, lon, datetime.utcnow().hour, api_key)
     if code == 200:
         return weather
@@ -62,7 +62,7 @@ def loop(data, lat, lon):
 
 if __name__ == "__main__":
     lat, lon = 65.633054, 22.093550
-    data = get_data(lat, lon)
+    data = get_data(lat, lon, api_key)
     refresh_interval = 10 * 60  # 10 Minutes
     now = time.time()
     next_update = now + refresh_interval

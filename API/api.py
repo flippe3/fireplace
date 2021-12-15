@@ -190,9 +190,9 @@ def detail():
     # get_data in the simulator
     weather = get_data(lats[-1], longs[-1], api_key)
 
-    temp.append(weather['temp'])
-    wind.append(weather['wind'])
-    cond.append(weather['condition'])
+    temp.append(weather['current']['temp_c'])
+    wind.append(weather['current']['wind_kph'])
+    cond.append(weather['current']['condition']['text'])
         
     return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond)
 
