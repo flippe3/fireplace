@@ -26,7 +26,7 @@ def calculate(weather):
     # Weekday needs to be added to check if its a weekday.
     # Maybe split weather up better.
 
-    time = weather["location"]["localtime"][11:13]  # In plain hours
+    time = weather["location"]["localtime"][11:13].replace(":", "")  # In plain hours
     temp = weather["current"]["temp_c"]
     wind = weather["current"]["wind_kph"]
     cloudy = weather["current"]["cloud"]
