@@ -275,7 +275,7 @@ def detail():
 @app.route('/delete', methods=['POST','GET'])
 def delete():
     if request.method == 'POST':
-        id=request.form['id']
+        id=str(request.form['id'])
         #result = request.form
         #id = str(result.getlist('id')[0])
 
