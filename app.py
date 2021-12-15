@@ -254,7 +254,7 @@ def success():
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
-        cursor.execute("INSERT INTO debugger(message) VALUES(\"" + token_current_user() + "\")");
+        cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(token_current_user()) + "\")");
         mydb.commit()
         requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
