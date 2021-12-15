@@ -64,7 +64,7 @@ def upload_file():
                 mydb = connect_db()
                 cursor = mydb.cursor()
                 cursor.execute("USE firedb")
-                cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + int(fireplace_id) + "\";")
+                cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
                 mydb.commit()
                 return redirect(request.referrer)
     return redirect(request.referrer, upload="failed")
@@ -202,7 +202,7 @@ def detail_user():
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
-        cursor.execute("SELECT image FROM fireplaces WHERE id=\"" + id + "\";")
+        cursor.execute("SELECT image FROM fireplaces WHERE id=\"" + str(id) + "\";")
         image = cursor.fetchone()
 
         return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond, sim=sim, img=image)
