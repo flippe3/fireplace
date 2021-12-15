@@ -109,7 +109,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-@token_required
+#@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -121,8 +121,8 @@ def create():
         wood = "TRUE"
     else:
         wood = "FALSE"
-
-    cursor.execute("USE firedb")
+    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    cursor.execute("USE firedb;")
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
             latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
