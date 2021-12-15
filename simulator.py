@@ -46,7 +46,7 @@ def calculate(weather):
         percentage = (0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))
     else:
         percentage = ((0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))) * 0.3
-    if set_time != 0 and set_time > current_time and current_time+100 > set_time:
+    if set_time != 0 and set_time <= current_time and current_time < set_time+100:
         return percentage + 0.25
     return percentage
 
