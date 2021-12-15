@@ -13,6 +13,7 @@
     <li class="list-group-item">Latitude: {{ latitude }}</li>
     <li class="list-group-item">Longitude: {{ longitude }}</li>
     <li class="list-group-item">Wood available: {{ wood }}</li>
+    <li class="list-group-item">ID: {{ id }}</li>
 </ul>
 <form action="http://130.240.200.57:5001/delete" method="POST">
     <input type="hidden" name="id" value={{ id }}/>
