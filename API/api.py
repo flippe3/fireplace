@@ -140,9 +140,7 @@ def delete_api():
     cursor = mydb.cursor()
     id = request.args.get('id')
     cursor.execute("USE firedb")
-
-    #cursor.execute("DELETE FROM fireplaces WHERE id =" + str(id) + ";")
-    cursor.execute("DELETE FROM fireplaces WHERE id =3;")
+    cursor.execute("DELETE FROM fireplaces WHERE id =" + str(id) + ";")
     mydb.commit()
     return "", 204
 

@@ -276,6 +276,7 @@ def delete():
     if request.method == 'POST':
         result = request.form
         id = str(result.getlist('id')[0])
+        id=4
         ids = {
             "id": id
         }
