@@ -61,11 +61,18 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 fireplace_id = str(request.referrer).split('=')[1]
-                mydb = connect_db()
-                cursor = mydb.cursor()
-                cursor.execute("USE firedb")
-                cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
-                mydb.commit()
+                #mydb = connect_db()
+                #cursor = mydb.cursor()
+                #cursor.execute("USE firedb")
+                #cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
+                #mydb.commit()
+
+                upload_info = {
+                    "filename": filename,
+                    "fireplace_id": fireplace_id
+                }
+
+                response = requests.get("http://172.30.103.27:4242/signup", params=upload_info)
                 return redirect(request.referrer)
     return redirect(request.referrer, upload="failed")
 
