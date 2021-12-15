@@ -84,6 +84,8 @@ def upload_file():
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
+    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    mydb.commit()
     try:
         jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
         cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
@@ -149,7 +151,8 @@ def delete():
 
     id = request.args.get('id')
     cursor.execute("USE firedb")
-
+    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    mydb.commit()
     try:
         jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
         cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
