@@ -135,7 +135,6 @@ def create():
 
 
 @app.route("/delete")
-#@token_required
 def delete():
     testitnow
 

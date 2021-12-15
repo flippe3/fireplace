@@ -278,7 +278,7 @@ def delete():
         ids = {
             "id": id
         }
-
+        requests.get("http://172.30.103.27:4242/create", params=point)
         #print(token_current_user(),file=sys.stderr)
         requests.get("http://172.30.103.27:4242/delete", params=ids)
         hereistheerror
