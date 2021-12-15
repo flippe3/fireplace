@@ -113,7 +113,7 @@ def sign_in():
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
-
+    cursor.execute("INSERT INTO debugger(message) VALUES(\""+request.args.get('token')+"\")");
     name = request.args.get('name')
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
