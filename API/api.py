@@ -98,7 +98,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-@token_required
+#@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -121,7 +121,7 @@ def create():
 
 
 @app.route("/delete")
-@token_required
+#@token_required
 def delete():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -159,7 +159,7 @@ def return_fireplaces():
     return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
 
 @app.route("/upload_file")
-@token_required
+#@token_required
 def upload_file():
     filename = request.args.get('filename')
     fireplace_id = request.args.get('fireplace_id')
