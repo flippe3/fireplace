@@ -195,11 +195,7 @@ def detail():
     wind.append(weather['current']['wind_kph'])
     cond.append(weather['current']['condition']['text'])
 
-    simulator = requests.get("http://130.240.200.57:4242/simulator")
-
-    sim = simulator.json()['value']
-
-    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond, sim=sim)
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond)
 
 @app.route("/token")
 def token():

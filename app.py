@@ -164,9 +164,12 @@ def detail_user():
         cond = data['cond'][0]
 
         # Simulator
-#        sim = data['sim'][0]
+        sim_response = requests.get("http://172.30.103.27:4242/simulator")
+        sim_data = sim_response.json()
+        print(sim_data)
+        sim = float(sim_data['value']) * 100
 
-        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond)
+        return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond, sim=sim)
 
 
 @app.route('/success', methods=['POST', 'GET'])
