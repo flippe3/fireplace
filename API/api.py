@@ -128,6 +128,7 @@ def create():
     else:
         wood = "FALSE"
     cursor.execute("USE firedb;")
+    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     try:
         jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
         cursor.execute(
@@ -147,6 +148,7 @@ def delete():
 
     id = request.args.get('id')
     cursor.execute("USE firedb")
+
     try:
         jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
         cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
