@@ -136,8 +136,6 @@ def create():
 
 @app.route("/delete_api")
 def delete_api():
-    testitnow
-
     mydb = connect_db()
     cursor = mydb.cursor()
     id = request.args.get('id')
