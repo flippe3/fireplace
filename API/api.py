@@ -84,7 +84,7 @@ def upload_file():
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
-    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    #cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
     mydb.commit()
     return "", 204
@@ -125,7 +125,7 @@ def create():
     else:
         wood = "FALSE"
     cursor.execute("USE firedb;")
-    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    #cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
@@ -142,7 +142,7 @@ def delete():
 
     id = request.args.get('id')
     cursor.execute("USE firedb")
-    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    #cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
     cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
     mydb.commit()
