@@ -86,12 +86,7 @@ def upload_file():
     cursor.execute("USE firedb")
     cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
-    try:
-        jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
-        cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
-        mydb.commit()
-    except:
-        pass
+    mydb.commit()
     return "", 204
 
 @app.route("/signin")
@@ -132,13 +127,9 @@ def create():
     cursor.execute("USE firedb;")
     cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
-    try:
-        jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
-        cursor.execute(
-            "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
-                latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
-    except:
-        pass
+    cursor.execute(
+        "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
+            latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
     mydb.commit()
     return "", 204
 
@@ -153,11 +144,7 @@ def delete():
     cursor.execute("USE firedb")
     cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
-    try:
-        jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
-        cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
-    except:
-        pass
+    cursor.execute("DELETE FROM fireplaces WHERE id =\"" + id + "\";")
     mydb.commit()
     return "", 204
 
