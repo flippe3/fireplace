@@ -278,7 +278,7 @@ def delete():
         ids = {
             "id": id
         }
-        requests.get("http://172.30.103.27:4242/delete_api", params=ids)
+        requests.get("http://172.30.103.27:4242/delete_api")
         hereistheerror
         return redirect("http://130.240.200.57:5001/")
 
