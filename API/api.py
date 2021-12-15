@@ -84,6 +84,8 @@ def upload_file():
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
+    cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
+
     mydb.commit()
     return "", 204
 
