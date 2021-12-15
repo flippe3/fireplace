@@ -270,7 +270,7 @@ def detail():
             return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
 
 
-@app.route('/delete', methods=['POST'])
+@app.route('/delete', methods=['POST','GET'])
 def delete():
     if request.method == 'POST':
         result = request.form
