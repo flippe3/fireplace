@@ -69,7 +69,8 @@ def upload_file():
 
                 upload_info = {
                     "filename": filename,
-                    "fireplace_id": fireplace_id
+                    "fireplace_id": fireplace_id,
+                    "token": token_current_user()
                 }
 
                 response = requests.get("http://172.30.103.27:4242/signup", params=upload_info)
