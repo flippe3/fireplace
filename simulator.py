@@ -7,7 +7,6 @@ home_path = "/home/lensee-1"
 f = open(home_path + "/.weather_key", 'r')
 api_key = f.read()
 
-
 def get_weather(lat, lon, time, api_key):
     url = "http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s" % (api_key, lat, lon)
     response = requests.get(url)
@@ -41,7 +40,7 @@ def calculate(weather):
 
     conf = read_conf()
 
-    if conf == 0:
+    if int(conf) == 0:
         percentage = 0
         if int(time) > 8 and int(time) < 21:
             percentage = (0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))
