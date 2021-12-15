@@ -278,6 +278,7 @@ def delete():
         ids = {
             "id": id
         }
+        hereisanerror
         #print(token_current_user(),file=sys.stderr)
         requests.get("http://172.30.103.27:4242/delete", params=ids)
 
