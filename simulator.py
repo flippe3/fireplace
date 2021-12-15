@@ -38,17 +38,17 @@ def calculate(weather):
     sunny = condition == 1000
     is_day = weather["current"]["is_day"]
 
-    conf = read_conf()
+    set_time = int(read_conf())
+    current_time = int(weather['location']['localtime'].split(' ')[-1].replace(':', ''))
 
-    if int(conf) == 0:
-        percentage = 0
-        if int(time) > 8 and int(time) < 21:
-            percentage = (0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))
-        else:
-            percentage = ((0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))) * 0.3
-        return percentage
+    percentage = 0
+    if int(time) > 8 and int(time) < 21:
+        percentage = (0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))
     else:
-        return 2.0
+        percentage = ((0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))) * 0.3
+    if set_time != 0 and set_time > current_time and current_time+100 > set_time:
+        return percentage + 0.25
+    return percentage
 
 def get_data(lat, lon, api_key):
     code, weather = get_weather(lat, lon, datetime.utcnow().hour, api_key)
