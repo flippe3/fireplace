@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import mysql.connector, os, hashlib, secrets
 from functools import wraps
+import requests
 import jwt
 import sys
 sys.path.append("/home/lensee-1/jenkins_workspace/fireplace")
@@ -193,8 +194,11 @@ def detail():
     temp.append(weather['current']['temp_c'])
     wind.append(weather['current']['wind_kph'])
     cond.append(weather['current']['condition']['text'])
-        
-    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond)
+
+    simulator = requests.get("http://127.0.0.1:4242/simulator")
+
+    sim = simulator.json()['value']
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond, sim=sim)
 
 @app.route("/token")
 def token():
