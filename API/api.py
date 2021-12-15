@@ -134,8 +134,8 @@ def create():
     return "", 204
 
 
-@app.route("/delete")
-def delete():
+@app.route("/delete_api")
+def delete_api():
     testitnow
 
     mydb = connect_db()
