@@ -275,12 +275,12 @@ def detail():
 @app.route('/delete', methods=['POST','GET'])
 def delete():
     if request.method == 'POST':
-        id=str(request.form['id'])
+        something=str(request.form['id'])
         #result = request.form
         #id = str(result.getlist('id')[0])
 
         ids = {
-            "id": id
+            "id": something
         }
         requests.get("http://172.30.103.27:4242/delete_api", params=ids)
         return redirect("http://130.240.200.57:5001/")
