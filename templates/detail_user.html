@@ -13,11 +13,19 @@
     <li class="list-group-item">Latitude: {{ latitude }}</li>
     <li class="list-group-item">Longitude: {{ longitude }}</li>
     <li class="list-group-item">Wood available: {{ wood }}</li>
-    <li class="list-group-item">Temperature: {{ temp }}</li>
-    <li class="list-group-item">Wind: {{ wind }}</li>
+    <li class="list-group-item">Temperature: {{ temp }} °C</li>
+    <li class="list-group-item">Wind: {{ wind }} </li>
     <li class="list-group-item">Condition: {{ cond }}</li>
     <li class="list-group-item">Available: {{ sim }} %</li>
 </ul>
+
+<title>Upload new File</title>
+<h1 class="text-white">Upload Image</h1>
+<form  action="http://130.240.200.57:5001/uploader" method="POST" enctype="multipart/form-data">
+  <input class="btn btn-lg text-white" type=file name=file>
+  <input class="btn btn-lg btn-success" type=submit value=Upload>
+</form>
+
 
 </body>
 </html>

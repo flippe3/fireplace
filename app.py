@@ -1,13 +1,17 @@
-import sys
+import sys, os
 import logging
 import jwt
-from flask import Flask, render_template, request, jsonify, redirect, make_response
+from flask import Flask, render_template, request, jsonify, redirect, make_response, flash
 import requests
 import mysql.connector
 import datetime
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey'
+UPLOAD_FOLDER = '/home/lensee-1/images/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def connect_db():
     mydb = mysql.connector.connect(
@@ -38,6 +42,26 @@ def map_func():
     cookie = request.cookies.get('userid')
     return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie)
 
+def allowed_file(filename):
+    return '.' in filename and \
+	filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/uploader', methods = ['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+        file = request.files['file']
+
+        if file.filename == '':
+                flash('No selected file')
+                return redirect(request.referrer)
+        if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                return redirect(request.referrer)
+    return redirect(request.referrer, upload="failed")
 
 @app.route('/signin')
 def signin():
