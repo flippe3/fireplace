@@ -74,6 +74,17 @@ def sign_up():
     else:
         return "", 401
 
+@app.route("/upload_file")
+@token_required
+def upload_file():
+    filename = request.args.get('filename')
+    fireplace_id = request.args.get('fireplace_id')
+    mydb = connect_db()
+    cursor = mydb.cursor()
+    cursor.execute("USE firedb")
+    cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
+    mydb.commit()
+    return "", 204
 
 @app.route("/signin")
 def sign_in():
@@ -98,7 +109,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-#@token_required
+@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
