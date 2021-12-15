@@ -165,7 +165,8 @@ def detail_admin():
         }
         response = requests.get("http://172.30.103.27:4242/detail", params=id)
         data = response.json()
-        id = data['id'][0]
+        #id = data['id'][0]
+        id = fireplace_id
         name = data['name'][0]
         latitude = data["lat"][0]
         longitude = data["long"][0]
@@ -274,9 +275,10 @@ def detail():
 @app.route('/delete', methods=['POST','GET'])
 def delete():
     if request.method == 'POST':
+
         result = request.form
         id = str(result.getlist('id')[0])
-        id=4
+
         ids = {
             "id": id
         }
