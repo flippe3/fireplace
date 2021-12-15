@@ -15,7 +15,7 @@ f = open(home_path + "/.weather_key", 'r')
 api_key = f.read()
 
 
-def token_required(f):
+"""def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.args.get('token')
@@ -32,7 +32,7 @@ def token_required(f):
 
         return f(*args, **kwargs)
 
-    return decorated
+    return decorated"""
 
 @app.route("/simulator")
 def simulator():
@@ -129,6 +129,7 @@ def create():
         wood = "FALSE"
     cursor.execute("USE firedb;")
     cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    mydb.commit()
     try:
         jwt.decode(request.args.get('token'), app.config['SECRET_KEY'], algorithms="HS256")
         cursor.execute(
