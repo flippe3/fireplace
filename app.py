@@ -277,7 +277,8 @@ def delete():
     if request.method == 'POST':
         something = request.form['id']
         ids = {
-            "id": something
+            "id": something,
+            "token": token_current_user()
         }
         requests.get("http://130.240.200.57:4242/delete_api", params=ids)
         return redirect("http://130.240.200.57:5001/")
