@@ -221,7 +221,7 @@ def detail_user():
         sim_response = requests.get("http://172.30.103.27:5000/read_simulator")
         sim_data = sim_response.json()
         print(sim_data)
-        sim = float(sim_data['value']) * 100
+        sim = float(sim_data[:5]) * 100
 
         mydb = connect_db()
         cursor = mydb.cursor()
