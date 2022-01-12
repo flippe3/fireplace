@@ -189,7 +189,7 @@ def simulator_conf_success():
         time = form_data.getlist('time')[0]
         time = time.replace(":", "")
         user_time = {"time": time}
-        do_write = requests.get("http://172.30.103.27:4242/simulator_config_write", params=user_time)
+        do_write = requests.get("http://172.30.103.27:5000/write_simulator", params=user_time)
         return redirect("http://130.240.200.57:5001/")
 
 @app.route('/detail_user', methods=['GET'])
