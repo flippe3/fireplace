@@ -1,0 +1,14 @@
+[Unit]
+Description=Fireplace flask lowlevel-api
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirecory=/var/lib/jenkins/workspace/fireplace/API
+ExecStart=/usr/bin/python3 /var/lib/jenkins/workspace/fireplace/API/lowlevel_api.py
+
+[Install]
+WantedBy=multi-user.target
