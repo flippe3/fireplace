@@ -218,7 +218,7 @@ def detail_user():
         cond = data['cond'][0]
 
         # Simulator
-        sim_response = requests.get("http://172.30.103.27:5000/simulator")
+        sim_response = requests.get("http://172.30.103.27:5000/read_simulator")
         sim_data = sim_response.json()
         print(sim_data)
         sim = float(sim_data['value']) * 100
