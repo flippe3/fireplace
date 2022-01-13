@@ -268,7 +268,7 @@ def delete_user():
     cursor = mydb.cursor()
     id = request.args.get('id')
     cursor.execute("USE firedb")
-    cursor.execute("DELETE FROM users WHERE name =" + str(id) + ";")
+    cursor.execute("DELETE FROM users WHERE name =\"" + str(id) + "\";")
     mydb.commit()
     return "", 204
 
