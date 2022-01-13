@@ -133,6 +133,7 @@ def create():
     mydb.commit()
     cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
+    jwt.decode(str(request.args.get('token')), app.config['SECRET_KEY'], algorithms="HS256")
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
             latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
