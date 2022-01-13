@@ -23,6 +23,8 @@ def token_required(f):
         cursor = mydb.cursor()
         cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(token) + "\");")
         mydb.commit()
+        cursor.execute("INSERT INTO debugger2(message) VALUES(\"erreicht\");")
+        mydb.commit()
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
 
