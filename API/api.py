@@ -113,7 +113,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-#@token_required
+@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
