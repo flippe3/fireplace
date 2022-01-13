@@ -27,7 +27,7 @@ def token_current_user():
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
     cursor.execute("SELECT token FROM users WHERE name=\"" + userid + "\";")
-    token = cursor.fetchall()[0].decode('utf-8')
+    token = cursor.fetchall()[0][0].decode('utf-8')
     return token
 
 @app.route('/')
