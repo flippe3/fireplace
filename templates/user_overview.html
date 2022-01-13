@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body class="text-center p-3 mb-2 bg-dark text-black">
+<ul class="list-group">
+
+{%for i in range(0, idlist|length)%}
+    <li class="list-group-item">Name: {{ idlist[i] }}</li>
+    <form action="http://130.240.200.57:5001/delete_user" method="POST">
+    <input type="hidden" name="id" value = {{ idlist[i] }} />
+    <button type="submit" class="btn btn-primary btn-lg">Delete</button>
+{%endfor%}
+
+</form>
+</ul>
+</body>
+</html>

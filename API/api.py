@@ -241,6 +241,36 @@ def token():
     else:
         return "", 501
 
+@app.route("/allusers")
+@token_required
+def return_users():
+    mydb = connect_db()
+    cursor = mydb.cursor()
+
+    cursor.execute("USE firedb")
+
+    cursor.execute("SELECT * FROM users")
+
+    result = cursor.fetchall()
+    name = []
+    role = []
+
+    for x in result:
+        name.append(x[0])
+        role.append(x[1])
+
+    return jsonify(id=name, role=role)
+
+@app.route("/delete_user")
+@token_required
+def delete_user():
+    mydb = connect_db()
+    cursor = mydb.cursor()
+    id = request.args.get('id')
+    cursor.execute("USE firedb")
+    cursor.execute("DELETE FROM users WHERE id =" + str(id) + ";")
+    mydb.commit()
+    return "", 204
 
 if __name__ == "__main__":
     app.run(host="172.30.103.27", port=4242)

@@ -233,6 +233,25 @@ def detail_user():
 
         return render_template("detail_user.html", id=id, name=name, latitude=latitude, longitude=longitude, wood=wood, temp=temp, wind=wind, cond=cond, sim=sim, img=image)
 
+@app.route('/user_overview')
+def user_overview():
+    response = requests.get("http://172.30.103.27:4242/allusers")
+    data = response.json()
+    idlist = data['id']
+    rolelist = data['role']
+    cookie = request.cookies.get('userid')
+    return render_template('user_overview.html', idlist=idlist, cookie=cookie)
+
+@app.route('/delete_user', methods=['POST','GET'])
+def delete_user():
+    if request.method == 'POST':
+        something = request.form['id']
+        ids = {
+            "id": something,
+            "token": token_current_user()
+        }
+        requests.get("http://130.240.200.57:4242/delete_user", params=ids)
+        return redirect("http://130.240.200.57:5001/")
 
 @app.route('/success', methods=['POST', 'GET'])
 def success():
