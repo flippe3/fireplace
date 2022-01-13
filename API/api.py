@@ -18,13 +18,14 @@ api_key = f.read()
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get('token')
         mydb = connect_db()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(token) + "\");")
-        mydb.commit()
         cursor.execute("INSERT INTO debugger2(message) VALUES(\"erreicht\");")
         mydb.commit()
+        token = request.args.get('token')
+        cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(token) + "\");")
+        mydb.commit()
+
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
 
