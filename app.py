@@ -110,7 +110,7 @@ def signup_success():
         name = str(result.getlist('name')[0])
         password = str(result.getlist('password')[0])
 
-        token = str(jwt.encode({'user': name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}, app.config['SECRET_KEY'], algorithm="HS256"))
+        token = str(jwt.encode({'user': name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30000)}, app.config['SECRET_KEY'], algorithm="HS256"))
         user = {
             "name": name,
             "password": password,
@@ -132,7 +132,7 @@ def get_token():
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
         userid = request.cookies.get('userid')
-        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}, app.config['SECRET_KEY'], algorithm="HS256"))
+        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30000)}, app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = \""+ token +"\" WHERE name = \""+ userid +"\";")
         mydb.commit()
         return redirect("http://130.240.200.57:5001/")
@@ -238,8 +238,7 @@ def user_overview():
     token = {
         "token": token_current_user()
     }
-    requests.get("http://130.240.200.57:4242/delete_user", params=token)
-    response = requests.get("http://172.30.103.27:4242/allusers")
+    response=requests.get("http://172.30.103.27:4242/allusers", params=token)
     data = response.json()
     idlist = data['name']
     rolelist = data['role']
