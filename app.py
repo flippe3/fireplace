@@ -240,7 +240,7 @@ def user_overview():
     }
     response=requests.get("http://172.30.103.27:4242/allusers", params=token)
     data = response.json()
-    idlist = data['name']
+    idlist = data['id']
     rolelist = data['role']
     cookie = request.cookies.get('userid')
     return render_template('user_overview.html', idlist=idlist, cookie=cookie)
