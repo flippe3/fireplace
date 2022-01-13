@@ -28,7 +28,7 @@ def token_current_user():
     cursor.execute("USE firedb")
     cursor.execute("SELECT token FROM users WHERE name=\"" + userid + "\";")
     token = cursor.fetchall()[0][0]#.decode('utf-8')
-    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(token) + "\");")
+    cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(token) + "\");")
     mydb.commit()
     return token
 

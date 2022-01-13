@@ -21,7 +21,7 @@ def token_required(f):
         token = request.args.get('token')
         mydb = connect_db()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(token) + "\");")
+        cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(token) + "\");")
         mydb.commit()
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
@@ -126,7 +126,7 @@ def create():
     else:
         wood = "FALSE"
     cursor.execute("USE firedb;")
-    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
