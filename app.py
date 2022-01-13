@@ -235,6 +235,10 @@ def detail_user():
 
 @app.route('/user_overview')
 def user_overview():
+    token = {
+        "token": token_current_user()
+    }
+    requests.get("http://130.240.200.57:4242/delete_user", params=token)
     response = requests.get("http://172.30.103.27:4242/allusers")
     data = response.json()
     idlist = data['name']
