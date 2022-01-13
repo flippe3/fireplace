@@ -3,15 +3,16 @@ A webapp to find fireplaces in Luleå
 
 ## General Documentation
 
+### [Napkin sketch](https://github.com/flippe3/fireplace/blob/main/references/napkin_sketch.jpg)
+
 ## API Documentation
 
 ## Time Log
 
-
 ## Deployment protocol
 
 ### Prerequisits 
-* Ubuntu 18.04 server with ~ 4gb ram and 10gb memory.
+* Ubuntu 18.04 server with around 4gb ram and 10gb memory.
 * Python 3.8.10
 * Install [Jenkins](https://www.jenkins.io/doc/book/installing/linux/) 
 
