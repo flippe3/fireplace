@@ -77,7 +77,7 @@ def sign_up():
         return "", 401
 
 @app.route("/upload_file")
-#@token_required
+@token_required
 def upload_file():
     filename = request.args.get('filename')
     fireplace_id = request.args.get('fireplace_id')
@@ -112,7 +112,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-#@token_required
+@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -135,7 +135,7 @@ def create():
 
 
 @app.route("/delete_api")
-#@token_required
+@token_required
 def delete_api():
     mydb = connect_db()
     cursor = mydb.cursor()
