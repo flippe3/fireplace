@@ -237,7 +237,7 @@ def detail_user():
 def user_overview():
     response = requests.get("http://172.30.103.27:4242/allusers")
     data = response.json()
-    idlist = data['id']
+    idlist = data['name']
     rolelist = data['role']
     cookie = request.cookies.get('userid')
     return render_template('user_overview.html', idlist=idlist, cookie=cookie)
