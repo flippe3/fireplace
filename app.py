@@ -132,7 +132,7 @@ def get_token():
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
         userid = request.cookies.get('userid')
-        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=120)}, app.config['SECRET_KEY'], algorithm="HS256"))
+        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}, app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = \""+ token +"\" WHERE name = \""+ userid +"\";")
         mydb.commit()
         return redirect("http://130.240.200.57:5001/")

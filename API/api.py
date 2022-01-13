@@ -18,14 +18,7 @@ api_key = f.read()
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        mydb = connect_db()
-        cursor = mydb.cursor()
-        cursor.execute("INSERT INTO debugger2(message) VALUES(\"erreicht\");")
-        mydb.commit()
         token = request.args.get('token')
-        cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(token) + "\");")
-        mydb.commit()
-
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
 
@@ -116,7 +109,7 @@ def sign_in():
         return "", 501
 
 @app.route("/create")
-#@token_required
+@token_required
 def create():
     mydb = connect_db()
     cursor = mydb.cursor()
@@ -133,7 +126,7 @@ def create():
     mydb.commit()
     cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
-    jwt.decode(str(request.args.get('token')), app.config['SECRET_KEY'], algorithms="HS256")
+    #jwt.decode(str(request.args.get('token')), app.config['SECRET_KEY'], algorithms="HS256")
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
             latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
