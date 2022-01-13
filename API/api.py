@@ -242,7 +242,7 @@ def token():
         return "", 501
 
 @app.route("/allusers")
-@token_required
+#@token_required
 def return_users():
     mydb = connect_db()
     cursor = mydb.cursor()
