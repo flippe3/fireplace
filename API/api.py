@@ -262,7 +262,7 @@ def return_users():
     return jsonify(id=name, role=role)
 
 @app.route("/delete_user")
-#@token_required
+@token_required
 def delete_user():
     mydb = connect_db()
     cursor = mydb.cursor()

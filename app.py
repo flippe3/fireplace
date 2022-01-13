@@ -254,7 +254,7 @@ def delete_user():
             "token": token_current_user()
         }
         requests.get("http://130.240.200.57:4242/delete_user", params=ids)
-        return redirect("http://130.240.200.57:5001/")
+        return redirect("http://130.240.200.57:5001/user_overview/")
 
 @app.route('/success', methods=['POST', 'GET'])
 def success():
