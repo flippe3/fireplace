@@ -126,7 +126,7 @@ def create():
     else:
         wood = "FALSE"
     cursor.execute("USE firedb;")
-    #cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
+    cursor.execute("INSERT INTO debugger(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
