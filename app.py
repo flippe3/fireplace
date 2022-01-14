@@ -49,8 +49,12 @@ def map_func():
     cursor.execute("USE firedb")
     cursor.execute("SELECT role FROM users WHERE name=\"" + str(userid) + "\";")
     role= cursor.fetchone()
+
+    print(role)
+
     if role =="admin":
         return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=True)
+
     return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=False)
 
 def allowed_file(filename):
