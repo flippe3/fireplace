@@ -318,6 +318,7 @@ def delete_user():
         role = cursor.fetchone()[0]
         if role == "admin":
             something = request.form['id']
+            print(something)
             ids = {
                 "id": something,
                 "token": token_current_user()
