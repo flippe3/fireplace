@@ -49,5 +49,5 @@ systemctl start app.service
 systemctl start simulator.service
 ```
 
-
-
+# Functionality of the website
+With the website, it is possible to find fireplaces in and around Luleå. When routing to it, the user can see the map with fireplaces, click on a marker and on the link to access a detail page. Additionally, a user can log in and after logging in, it can also receive an API token by clicking on the username in the right top corner or logout. Another functionality is to create fireplaces by clicking on the create button and to book a slot when to go to a fireplace, to change the value of the simulator for a certain point in time. If the logged-in user is an admin, it is also possible to see an overview of all the users and to delete them. This site is opened by pressing the button Users.
