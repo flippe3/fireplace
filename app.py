@@ -44,6 +44,7 @@ def map_func():
     cookie = request.cookies.get('userid')
 
     userid = request.cookies.get('userid')
+
     if userid != None:
         mydb = connect_db()
         cursor = mydb.cursor()
@@ -51,9 +52,9 @@ def map_func():
         cursor.execute("SELECT role FROM users WHERE name=\"" + str(userid) + "\";")
         role = cursor.fetchone()[0]
         if role =="admin":
-            return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=True)
+            return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin="True")
 
-    return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=False)
+    return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin="False")
 
 def allowed_file(filename):
     return '.' in filename and \
