@@ -328,17 +328,19 @@ def detail():
     if request.method == 'GET':
         id = request.args.get('id')
         userid = request.cookies.get('userid')
-        mydb = connect_db()
-        cursor = mydb.cursor()
-        cursor.execute("USE firedb")
-        cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
-        role = cursor.fetchone()[0]
-        print(role)
-        if role =="admin":
-            return redirect("http://130.240.200.57:5001/detail_admin?id=" + id)
+        if userid != None:
+            mydb = connect_db()
+            cursor = mydb.cursor()
+            cursor.execute("USE firedb")
+            cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
+            role = cursor.fetchone()[0]
+            print(role)
+            if role =="admin":
+                return redirect("http://130.240.200.57:5001/detail_admin?id=" + id)
+            else:
+                return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
         else:
             return redirect("http://130.240.200.57:5001/detail_user?id=" + id)
-
 
 @app.route('/delete', methods=['POST','GET'])
 def delete():
