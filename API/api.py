@@ -1,3 +1,4 @@
+# Further details and documentation can be found here: https://github.com/flippe3/fireplace/blob/main/APIDocumentation.md
 from flask import Flask, jsonify, request
 import mysql.connector, os, hashlib, secrets
 from functools import wraps
@@ -33,13 +34,6 @@ def token_required(f):
     return decorated
 
 
-@app.route("/simulator")
-def simulator():
-    f = open(home_path + "/.simulator_save", 'r')
-    val = f.read().split('\n')[-2]
-    return jsonify(value=val)
-
-
 def connect_db():
     mydb = mysql.connector.connect(
         host="127.0.0.1",
@@ -47,6 +41,32 @@ def connect_db():
         password="root"
     )
     return mydb
+
+
+@app.route("/allfireplaces")
+def return_fireplaces():
+    mydb = connect_db()
+    cursor = mydb.cursor()
+
+    cursor.execute("USE firedb")
+
+    cursor.execute("SELECT * FROM fireplaces")
+
+    result = cursor.fetchall()
+    ids = []
+    names = []
+    lats = []
+    longs = []
+    woods = []
+
+    for x in result:
+        ids.append(x[0])
+        names.append(x[1])
+        lats.append(float(x[2]))
+        longs.append(float(x[3]))
+        woods.append(x[4])
+
+    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
 
 
 @app.route("/signup")
@@ -75,20 +95,6 @@ def sign_up():
         return "", 200
     else:
         return "", 401
-
-
-@app.route("/upload_file")
-@token_required
-def upload_file():
-    filename = request.args.get('filename')
-    fireplace_id = request.args.get('fireplace_id')
-    mydb = connect_db()
-    cursor = mydb.cursor()
-    cursor.execute("USE firedb")
-    cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
-
-    mydb.commit()
-    return "", 204
 
 
 @app.route("/signin")
@@ -128,13 +134,23 @@ def create():
     else:
         wood = "FALSE"
     cursor.execute("USE firedb;")
-    cursor.execute("INSERT INTO debugger2(message) VALUES(\"angekommen\");")
-    mydb.commit()
-    cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(request.args.get('token')) + "\");")
-    mydb.commit()
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
             latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
+    mydb.commit()
+    return "", 204
+
+
+@app.route("/upload_file")
+@token_required
+def upload_file():
+    filename = request.args.get('filename')
+    fireplace_id = request.args.get('fireplace_id')
+    mydb = connect_db()
+    cursor = mydb.cursor()
+    cursor.execute("USE firedb")
+    cursor.execute("UPDATE fireplaces SET image = \"" + filename + "\" WHERE id = \"" + str(fireplace_id) + "\";")
+
     mydb.commit()
     return "", 204
 
@@ -149,41 +165,6 @@ def delete_api():
     cursor.execute("DELETE FROM fireplaces WHERE id =" + str(id) + ";")
     mydb.commit()
     return "", 204
-
-
-@app.route("/simulator_config_write")
-def simulator_config_write():
-    time = request.args.get('time')
-    f = open(home_path + "/.simulator_conf", 'w')
-    f.write(str(time))
-    f.close()
-    return "", 200
-
-
-@app.route("/allfireplaces")
-def return_fireplaces():
-    mydb = connect_db()
-    cursor = mydb.cursor()
-
-    cursor.execute("USE firedb")
-
-    cursor.execute("SELECT * FROM fireplaces")
-
-    result = cursor.fetchall()
-    ids = []
-    names = []
-    lats = []
-    longs = []
-    woods = []
-
-    for x in result:
-        ids.append(x[0])
-        names.append(x[1])
-        lats.append(float(x[2]))
-        longs.append(float(x[3]))
-        woods.append(x[4])
-
-    return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods)
 
 
 @app.route("/detail")
