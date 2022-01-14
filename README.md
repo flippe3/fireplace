@@ -3,7 +3,7 @@
 ## Napkin Sketch
 ## ![Napkin sketch](https://github.com/flippe3/fireplace/blob/main/references/napkin_sketch.jpg?raw=true)
 
-# [API Documentation](https://github.com/flippe3/fireplace/blob/main/references/api_sketch.jpg)
+# [API Documentation](https://github.com/flippe3/fireplace/blob/main/APIDocumentation.md)
 
 # [Time Log](https://github.com/flippe3/fireplace/blob/main/references/Timelog.xlsx)
 
