@@ -4,6 +4,7 @@ from functools import wraps
 import requests
 import jwt
 import sys
+
 sys.path.append("/home/lensee-1/jenkins_workspace/fireplace")
 from simulator import get_data
 
@@ -20,16 +21,17 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = request.args.get('token')
         if not token:
-            return jsonify({'message' : 'Token is missing!'}), 403
+            return jsonify({'message': 'Token is missing!'}), 403
 
         try:
             jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
         except:
-            return jsonify({'message' : 'Token is invalid!'}), 403
+            return jsonify({'message': 'Token is invalid!'}), 403
 
         return f(*args, **kwargs)
 
     return decorated
+
 
 @app.route("/simulator")
 def simulator():
@@ -67,11 +69,13 @@ def sign_up():
     # Don't allow same usernames.
     if exists == None:
         cursor.execute(
-            "INSERT INTO users (name, password, role, salt, token) VALUES (\"" + str(username) + "\", \"" + str(hashed_password) + "\", \"user\", \"" + str(salt) + "\",\""+ str(token)+"\");")
+            "INSERT INTO users (name, password, role, salt, token) VALUES (\"" + str(username) + "\", \"" + str(
+                hashed_password) + "\", \"user\", \"" + str(salt) + "\",\"" + str(token) + "\");")
         mydb.commit()
         return "", 200
     else:
         return "", 401
+
 
 @app.route("/upload_file")
 @token_required
@@ -85,6 +89,7 @@ def upload_file():
 
     mydb.commit()
     return "", 204
+
 
 @app.route("/signin")
 def sign_in():
@@ -108,6 +113,7 @@ def sign_in():
     else:
         return "", 501
 
+
 @app.route("/create")
 @token_required
 def create():
@@ -126,7 +132,6 @@ def create():
     mydb.commit()
     cursor.execute("INSERT INTO debugger2(message) VALUES(\"" + str(request.args.get('token')) + "\");")
     mydb.commit()
-    #jwt.decode(str(request.args.get('token')), app.config['SECRET_KEY'], algorithms="HS256")
     cursor.execute(
         "INSERT INTO fireplaces (name, latitude, longitude, wood) VALUES (\"" + str(name) + "\", " + str(
             latitude) + ", " + str(longitude) + ", " + str(wood) + ");")
@@ -145,14 +150,15 @@ def delete_api():
     mydb.commit()
     return "", 204
 
+
 @app.route("/simulator_config_write")
 def simulator_config_write():
     time = request.args.get('time')
-    print(time)
     f = open(home_path + "/.simulator_conf", 'w')
     f.write(str(time))
     f.close()
     return "", 200
+
 
 @app.route("/allfireplaces")
 def return_fireplaces():
@@ -200,8 +206,7 @@ def detail():
     wind = []
     cond = []
     sim = []
-    
-    
+
     for x in result:
         ids.append(x[0])
         names.append(x[1])
@@ -218,28 +223,6 @@ def detail():
 
     return jsonify(id=ids, name=names, lat=lats, long=longs, wood=woods, temp=temp, wind=wind, cond=cond)
 
-@app.route("/token")
-def token():
-    mydb = connect_db()
-    cursor = mydb.cursor()
-
-    username = request.args.get('name')
-    password = request.args.get('password')
-
-    # This is our implementation of salted passwords.
-    cursor.execute("USE firedb")
-    cursor.execute("SELECT salt,password FROM users WHERE name=\"" + username + "\";")
-    data = cursor.fetchone()
-
-    if data != None:
-        salt, hashed_password = data[0], data[1]
-        test_hash = hashlib.sha256(password.encode() + salt.encode()).hexdigest()
-        if test_hash == hashed_password:
-            return "", 200
-        else:
-            return "", 501
-    else:
-        return "", 501
 
 @app.route("/allusers")
 @token_required
@@ -261,6 +244,7 @@ def return_users():
 
     return jsonify(id=name, role=role)
 
+
 @app.route("/delete_user")
 @token_required
 def delete_user():
@@ -271,6 +255,7 @@ def delete_user():
     cursor.execute("DELETE FROM users WHERE name =\"" + str(id) + "\";")
     mydb.commit()
     return "", 204
+
 
 if __name__ == "__main__":
     app.run(host="172.30.103.27", port=4242)

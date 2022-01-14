@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader
 
 home_path = "/home/lensee-1/"
 
+
 class LowLevel(object):
     def __init__(self, config):
         self.redis = redis.Redis(
@@ -29,7 +30,6 @@ class LowLevel(object):
 
     def on_write_simulator(self, request):
         time = request.args.get('time')
-        print(time)
         f = open(home_path + "/.simulator_conf", 'w')
         f.write(str(time))
         f.close()
@@ -54,16 +54,18 @@ class LowLevel(object):
 
 def create_app(redis_host='localhost', redis_port=6379, with_static=True):
     app = LowLevel({
-        'redis_host':       redis_host,
-        'redis_port':       redis_port
+        'redis_host': redis_host,
+        'redis_port': redis_port
     })
     if with_static:
         app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
-            '/static':  os.path.join(os.path.dirname(__file__), 'static')
+            '/static': os.path.join(os.path.dirname(__file__), 'static')
         })
     return app
 
+
 if __name__ == '__main__':
     from werkzeug.serving import run_simple
+
     app = create_app()
     run_simple('172.30.103.27', 5000, app, use_debugger=True, use_reloader=True)
