@@ -187,7 +187,7 @@ def detail_admin():
                 wood = "false"
             return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
         else:
-            return "access denied!"
+            return redirect("http://130.240.200.57:5001/")
     
 @app.route('/simulator_conf')
 def simulator_conf():
@@ -245,26 +245,47 @@ def detail_user():
 
 @app.route('/user_overview')
 def user_overview():
-    token = {
-        "token": token_current_user()
-    }
-    response=requests.get("http://172.30.103.27:4242/allusers", params=token)
-    data = response.json()
-    idlist = data['id']
-    rolelist = data['role']
-    cookie = request.cookies.get('userid')
-    return render_template('user_overview.html', idlist=idlist, cookie=cookie)
+    userid = request.cookies.get('userid')
+    mydb = connect_db()
+    cursor = mydb.cursor()
+    cursor.execute("USE firedb")
+    cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
+    role = cursor.fetchone()[0]
+    print(role)
+    if role == "admin":
+        token = {
+            "token": token_current_user()
+        }
+        response=requests.get("http://172.30.103.27:4242/allusers", params=token)
+        data = response.json()
+        idlist = data['id']
+        rolelist = data['role']
+        cookie = request.cookies.get('userid')
+        return render_template('user_overview.html', idlist=idlist, cookie=cookie)
+    else:
+        redirect("http://130.240.200.57:5001/user_overview")
+
 
 @app.route('/delete_user', methods=['POST','GET'])
 def delete_user():
     if request.method == 'POST':
-        something = request.form['id']
-        ids = {
-            "id": something,
-            "token": token_current_user()
-        }
-        requests.get("http://130.240.200.57:4242/delete_user", params=ids)
-        return redirect("http://130.240.200.57:5001/user_overview")
+        userid = request.cookies.get('userid')
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("USE firedb")
+        cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
+        role = cursor.fetchone()[0]
+        print(role)
+        if role == "admin":
+            something = request.form['id']
+            ids = {
+                "id": something,
+                "token": token_current_user()
+            }
+            requests.get("http://130.240.200.57:4242/delete_user", params=ids)
+            return redirect("http://130.240.200.57:5001/user_overview")
+        else:
+            return redirect("http://130.240.200.57:5001")
 
 @app.route('/success', methods=['POST', 'GET'])
 def success():
@@ -310,13 +331,23 @@ def detail():
 @app.route('/delete', methods=['POST','GET'])
 def delete():
     if request.method == 'POST':
-        something = request.form['id']
-        ids = {
-            "id": something,
-            "token": token_current_user()
-        }
-        requests.get("http://130.240.200.57:4242/delete_api", params=ids)
-        return redirect("http://130.240.200.57:5001/")
+        userid = request.cookies.get('userid')
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("USE firedb")
+        cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
+        role = cursor.fetchone()[0]
+        print(role)
+        if role == "admin":
+            something = request.form['id']
+            ids = {
+                "id": something,
+                "token": token_current_user()
+            }
+            requests.get("http://130.240.200.57:4242/delete_api", params=ids)
+            return redirect("http://130.240.200.57:5001/")
+        else:
+            return redirect("http://130.240.200.57:5001/")
 
 
 @app.route('/create')
