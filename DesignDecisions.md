@@ -28,7 +28,7 @@ For the question, which SQL database, we use, we went with MySQL because it is a
 The two main entities in our database are the table with users consisting of names and roles and the table with fireplaces consisting of the location and additional attributes like whether they have wood. Both entities also have an id. For the fireplaces, it is an artificially created one and for the users, it is just their name. The name could be taken, because it is not supposed, that two users with the same username exist. For fireplaces, it would be ok if two fireplaces with the same name exist.
 
 ### Dataflow
-![Dataflow](https://github.com/flippe3/fireplace/blob/main/diagramdatabase.png?raw=true)
+![Dataflow](https://github.com/flippe3/fireplace/blob/main/references/diagramdatabase.png?raw=true)
 If data is inserted into the database or taken from the database, this works with the database. So in the first step, a user would trigger something on his screen. Then our website would process it and create an API call to get the things done. The API would receive the request, establish a connection to the database and would then run the necessary query.
 
 The only exception for this process is the user authentication. For this, the website directly accesses and verifies the login credentials from the database and no API call is done.
