@@ -263,7 +263,7 @@ def user_overview():
         cookie = request.cookies.get('userid')
         return render_template('user_overview.html', idlist=idlist, cookie=cookie)
     else:
-        redirect("http://130.240.200.57:5001/user_overview")
+        redirect("http://130.240.200.57:5001")
 
 
 @app.route('/delete_user', methods=['POST','GET'])
