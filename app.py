@@ -48,10 +48,7 @@ def map_func():
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
     cursor.execute("SELECT role FROM users WHERE name=\"" + str(userid) + "\";")
-    role= cursor.fetchone()
-
-    print(role)
-
+    role = cursor.fetchone()[0]
     if role =="admin":
         return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=True)
 
@@ -276,7 +273,7 @@ def user_overview():
         cookie = request.cookies.get('userid')
         return render_template('user_overview.html', idlist=idlist, cookie=cookie)
     else:
-        redirect("http://130.240.200.57:5001")
+        return redirect("http://130.240.200.57:5001")
 
 
 @app.route('/delete_user', methods=['POST','GET'])
