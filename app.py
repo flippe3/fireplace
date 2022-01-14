@@ -289,7 +289,7 @@ def detail():
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
         cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
-        role = cursor.fetchone()
+        role = cursor.fetchone()[0]
         print(role)
         if role =="admin":
             return redirect("http://130.240.200.57:5001/detail_admin?id=" + id)
