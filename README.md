@@ -5,7 +5,7 @@
 
 # [API Documentation](https://github.com/flippe3/fireplace/blob/main/references/api_sketch.jpg)
 
-# [Time Log](https://github.com/flippe3/fireplace/blob/main/Timelog.xlsx)
+# [Time Log](https://github.com/flippe3/fireplace/blob/main/references/Timelog.xlsx)
 
 # Deployment protocol
 
@@ -25,7 +25,7 @@ cd fireplace
 pip3 install -r requirements.txt
 ```
 ### Setup the database
-
+Use [this](https://github.com/flippe3/fireplace/blob/main/MysqlDatabaseSetup.sql) database setup.
 
 ### Changing database passwords
 In `app.py` and `API/api.py`, you will have to enter the database username and password and also the IP for the database.
