@@ -1,4 +1,4 @@
-# General Documentation
+# [General Documentation](https://github.com/flippe3/fireplace/blob/main/DesignDecisions.md)
 
 ## Napkin Sketch
 ## ![Napkin sketch](https://github.com/flippe3/fireplace/blob/main/references/napkin_sketch.jpg?raw=true)
