@@ -161,23 +161,33 @@ def signin_success():
 @app.route('/detail_admin', methods=['GET'])
 def detail_admin():
     if request.method == 'GET':
-        fireplace_id = request.args.get('id')
-        id = {
-            "id": fireplace_id
-        }
-        response = requests.get("http://172.30.103.27:4242/detail", params=id)
-        data = response.json()
-        #id = data['id'][0]
-        id = str(fireplace_id)
-        name = data['name'][0]
-        latitude = data["lat"][0]
-        longitude = data["long"][0]
-        wood = data['wood'][0]
-        if wood ==1:
-            wood = "yes"
+        userid = request.cookies.get('userid')
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("USE firedb")
+        cursor.execute("SELECT role FROM users WHERE name=\"" + userid + "\";")
+        role = cursor.fetchone()[0]
+        print(role)
+        if role == "admin":
+            fireplace_id = request.args.get('id')
+            id = {
+                "id": fireplace_id
+            }
+            response = requests.get("http://172.30.103.27:4242/detail", params=id)
+            data = response.json()
+            #id = data['id'][0]
+            id = str(fireplace_id)
+            name = data['name'][0]
+            latitude = data["lat"][0]
+            longitude = data["long"][0]
+            wood = data['wood'][0]
+            if wood ==1:
+                wood = "yes"
+            else:
+                wood = "false"
+            return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
         else:
-            wood = "false"
-        return render_template("detail_admin.html",id=id, name=name, latitude=latitude, longitude=longitude, wood=wood)
+            return "access denied!"
     
 @app.route('/simulator_conf')
 def simulator_conf():
