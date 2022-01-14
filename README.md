@@ -31,7 +31,10 @@ Use [this](https://github.com/flippe3/fireplace/blob/main/MysqlDatabaseSetup.sql
 In `app.py` and `API/api.py`, you will have to enter the database username and password and also the IP for the database.
 
 ### Changing IP addresses
-You will also have to change the IP addresses to match your IP addresses.
+You will also have to change the IP addresses to match your IP addresses and make sure the paths are correct to your server in `app.py`, `API/api.py`, `simulator.py`.
+
+### Simulator API key
+The simulator also needs an API key from [weather api](https://www.weatherapi.com/) so you will need an account and generate an api key and store that in `~/.weather_key`.
 
 ### Setup services
 Now we have everything necessary to setup the website and to do so we have to start the systemd services that are included in the github repository. You may have to change paths in the .service files. To setup the files simply start the systemd services.
@@ -45,5 +48,6 @@ systemctl start lowlevel_api.service
 systemctl start app.service
 systemctl start simulator.service
 ```
+
 
 
