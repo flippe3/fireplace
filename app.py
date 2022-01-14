@@ -96,7 +96,7 @@ def signup():
 def logout():
     if request.method == 'POST':
         username = request.cookies.get('userid')
-        resp = make_response(redirect("http://172.30.103.27:5001"))
+        resp = make_response(redirect("http://130.240.200.57:5001"))
         resp.set_cookie('userid',username, max_age=0)
         return resp
     else:
