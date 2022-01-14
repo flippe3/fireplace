@@ -1,14 +1,15 @@
 # General Documentation
 
-## ![Napkin sketch](https://github.com/flippe3/fireplace/blob/main/references/napkin_sketch.jpg)
+## Napkin Sketch
+## ![Napkin sketch](https://github.com/flippe3/fireplace/blob/main/references/napkin_sketch.jpg?raw=true)
 
-# API Documentation
+# [API Documentation](https://github.com/flippe3/fireplace/blob/main/references/api_sketch.jpg)
 
-# Time Log
+# [Time Log](https://github.com/flippe3/fireplace/blob/main/Timelog.xlsx)
 
 # Deployment protocol
 
-## Prerequisits 
+## Prerequisite
 * Ubuntu 18.04 server with around 4gb ram and 10gb memory.
 * Python 3.8.10
 * Install [Jenkins](https://www.jenkins.io/doc/book/installing/linux/) 
