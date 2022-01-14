@@ -44,13 +44,14 @@ def map_func():
     cookie = request.cookies.get('userid')
 
     userid = request.cookies.get('userid')
-    mydb = connect_db()
-    cursor = mydb.cursor()
-    cursor.execute("USE firedb")
-    cursor.execute("SELECT role FROM users WHERE name=\"" + str(userid) + "\";")
-    role = cursor.fetchone()[0]
-    if role =="admin":
-        return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=True)
+    if userid != None:
+        mydb = connect_db()
+        cursor = mydb.cursor()
+        cursor.execute("USE firedb")
+        cursor.execute("SELECT role FROM users WHERE name=\"" + str(userid) + "\";")
+        role = cursor.fetchone()[0]
+        if role =="admin":
+            return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=True)
 
     return render_template('map.html', idlist=idlist, namelist=namelist,  latlist=latlist, longlist=longlist, woodlist=woodlist, cookie=cookie, admin=False)
 
