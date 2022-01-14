@@ -101,7 +101,7 @@ def signup():
 def signup_success():
     if request.method == 'POST':
         result = request.form
-        name = str(result.getlist('name')[0])
+        name = str(result.getlist('name')[0]).strip()
         password = str(result.getlist('password')[0])
 
         token = str(jwt.encode({'user': name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30000)},
@@ -131,7 +131,7 @@ def signin_success():
     if request.method == 'POST':
         result = request.form
 
-        name = str(result.getlist('name')[0])
+        name = str(result.getlist('name')[0]).strip()
         password = str(result.getlist('password')[0])
 
         user = {
