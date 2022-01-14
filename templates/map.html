@@ -14,7 +14,9 @@
   <div class="mb-3 text-center">
     {% if cookie %}
       <a href="/simulator_conf" class="btn btn-info float-left" role="button">Book</a>
-      <a href="/user_overview" class="btn btn-info float-left" role="button">Users</a>
+      {% if admin == True %}
+      <a href="/user_overview" class="btn btn-info float-left ml-2" role="button">Users</a>
+      {% endif %}
       <a href="/create" class="btn btn-info" role="button">Create Fireplace</a>
       <form class="form-logout float-right ml-2" action="http://130.240.200.57:5001/logout" method="POST">
         <button class="btn btn-danger" type="submit">Logout</button>
