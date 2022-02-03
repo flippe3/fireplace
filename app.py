@@ -431,4 +431,4 @@ def page_not_found(e):
     return Response('<p>Login failed</p>')
 
 if __name__ == '__main__':
-    app.run(host="172.30.103.27", port=5001, debug=False)
+    app.run(host="172.30.103.27", port=5001, debug=True)
