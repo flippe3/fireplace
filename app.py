@@ -30,7 +30,7 @@ class User(UserMixin):
 
     def __init__(self,  id):
         self.id = id
-        self.password = "password"
+        #self.password = "password"
 
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.password)
