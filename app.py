@@ -28,12 +28,12 @@ login_manager.login_view = "login"
 # silly user model
 class User(UserMixin):
 
-    def __init__(self,  name, password):
-        self.name = name
+    def __init__(self,  id, password):
+        self.id = id
         self.password = password
 
     def __repr__(self):
-        return "%d/%s/%s" % (self.name, self.password)
+        return "%d/%s/%s" % (self.id, self.password)
 
 # connection to database, database is not accessible remotely, no secure password needed
 def connect_db():
@@ -169,7 +169,7 @@ def signin_success():
         if response.status_code == 200:
             resp = make_response(redirect("http://130.240.200.57:5001/"))
             resp.set_cookie('userid', name, max_age=3600 * 24 * 14)
-            user=User(name=name, password=password)
+            user=User(id=name, password=password)
             login_user(user)
             return resp
         else:
