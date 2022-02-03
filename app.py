@@ -29,9 +29,9 @@ login_manager.login_view = "login"
 # silly user model
 class User(UserMixin):
 
-    def __init__(self,  name, pwd_hash):
+    def __init__(self,  name, password):
         self.name = name
-        self.password = pwd_hash
+        self.password = password
 
     def __repr__(self):
         return "%d/%s/%s" % (self.name, self.password)
