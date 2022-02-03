@@ -71,8 +71,10 @@ def map_func():
     longlist = data['long']
     namelist = data['name']
     woodlist = data['wood']
-    cookie = request.cookies.get('userid')
-    cookie = current_user.id
+    try:
+        cookie = current_user.id
+    except:
+        cookie = None
 
     if cookie != None:
         mydb = connect_db()
