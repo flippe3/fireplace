@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey'
 # config
 app.config.update(
-    DEBUG=True,
+    DEBUG=False,
     SECRET_KEY='thisisthesecretkey'
 )
 UPLOAD_FOLDER = '/home/lensee-1/jenkins_workspace/fireplace/static/'
@@ -25,15 +25,15 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-# silly user model
+
 class User(UserMixin):
 
-    def __init__(self,  id):
+    def __init__(self, id):
         self.id = id
-        #self.password = "password"
 
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.password)
+
 
 # connection to database, database is not accessible remotely, no secure password needed
 def connect_db():
@@ -55,12 +55,6 @@ def token_current_user():
     token = cursor.fetchall()[0][0][2:-1]
     return token
 
-# some protected url
-@app.route('/logintest')
-@login_required
-def home():
-    print(str(current_user.id))
-    return Response("Hello World!")
 
 @app.route('/')
 def map_func():
@@ -178,15 +172,15 @@ def signin_success():
 @app.route('/logout', methods=['POST'])
 def logout():
     if request.method == 'POST':
-        #username = current_user.id
+        # username = current_user.id
         logout_user()
         return redirect("http://130.240.200.57:5001")
 
 
 @app.route('/account')
 def accounOAt():
-    userid= current_user.id
-    token= token_current_user()
+    userid = current_user.id
+    token = token_current_user()
     try:
         jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
         token_valid = True
@@ -408,8 +402,6 @@ def success():
         except:
             wood = "off"
 
-
-
         point = {
             "name": name,
             "latitude": latitude,
@@ -420,15 +412,18 @@ def success():
         requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
 
+
 # callback to reload the user object
 @login_manager.user_loader
 def load_user(id):
     return User(id)
+
 
 # handle login failed
 @app.errorhandler(401)
 def page_not_found(e):
     return Response('<p>Login failed</p>')
 
+
 if __name__ == '__main__':
-    app.run(host="172.30.103.27", port=5001, debug=True)
+    app.run(host="172.30.103.27", port=5001, debug=False)
