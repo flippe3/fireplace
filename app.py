@@ -28,9 +28,9 @@ login_manager.login_view = "login"
 # silly user model
 class User(UserMixin):
 
-    def __init__(self,  id, password):
+    def __init__(self,  id):
         self.id = id
-        self.password = password
+        self.password = "password"
 
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.password)
@@ -421,8 +421,8 @@ def logouttest():
 
 # callback to reload the user object
 @login_manager.user_loader
-def load_user(userid, password):
-    return User(userid, password)
+def load_user(id):
+    return User(id)
 
 # handle login failed
 @app.errorhandler(401)
