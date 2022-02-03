@@ -191,8 +191,12 @@ def logout():
 def accounOAt():
     cookie= current_user.id
     token= token_current_user()
-
-    return render_template('account.html', cookie=cookie, token=token)
+    try:
+        jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
+        token_valid = True
+    except:
+        token_valid = False
+    return render_template('account.html', cookie=cookie, token=token, token_valid=token_valid)
 
 
 @app.route('/get_token', methods=['POST'])
