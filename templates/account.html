@@ -12,8 +12,9 @@
     {% if cookie %}
     <form class="form-signup" action="http://130.240.200.57:5001/get_token" method="POST">
         <h2 class="text-white"> Account: {{ cookie }}</h2>
+        <h2 class="text-white"> Current token: {{ token }}</h2>
         <input type="password" name="password" class="form-control mb-1" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Get API token</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Get new API token</button>
         {% if success %}
         <h3 class="text-white"> API token: {{ success }}</h3>
         {% endif %}

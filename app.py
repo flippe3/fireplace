@@ -160,8 +160,10 @@ def logout():
 
 @app.route('/account')
 def accounOAt():
-    cookie = request.cookies.get('userid')
-    return render_template('account.html', cookie=cookie)
+    cookie= request.cookies.get('userid')
+    token= token_current_user()
+
+    return render_template('account.html', cookie=cookie, token=token)
 
 
 @app.route('/get_token', methods=['POST'])
