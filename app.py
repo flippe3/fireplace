@@ -206,7 +206,7 @@ def get_token():
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
         userid = current_user.id
-        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30000)},
+        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)},
                                app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = \"" + token + "\" WHERE name = \"" + userid + "\";")
         mydb.commit()
@@ -406,12 +406,20 @@ def success():
         except:
             wood = "off"
 
+        token = token_current_user()
+        try:
+            jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
+            token_valid = "true"
+        except:
+            token_valid = "false"
+
         point = {
             "name": name,
             "latitude": latitude,
             "longitude": longitude,
             "wood": wood,
-            "token": token_current_user()
+            "token": token_current_user(),
+            "token_valid": token_valid
         }
         requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
