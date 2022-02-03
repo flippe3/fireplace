@@ -10,7 +10,6 @@ api_key = f.read()
 def get_weather(lat, lon, time, api_key):
     url = "http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s" % (api_key, lat, lon)
     response = requests.get(url)
-    print(response, response.text, response.status_code)
     data = json.loads(response.text)
     return response.status_code, data
 
@@ -57,9 +56,11 @@ def get_data(lat, lon, api_key):
         return weather
     else:
         print("Calling the weather API failed.")
-        weather['current']['temp_c'] = 0 
-        weather['current']['wind_kph'] = 0
-        weather['current']['condition']['text'] = "None"
+        weather['current'] = {}
+        weather['current']['temp_c'] = "Unavailable"
+        weather['current']['wind_kph'] = "Unavailable"
+        weather['current']['condition'] = {}
+        weather['current']['condition']['text'] = "Unavailable"
         return weather
 
 def loop(data, lat, lon):
