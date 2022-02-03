@@ -72,6 +72,7 @@ def map_func():
     namelist = data['name']
     woodlist = data['wood']
     cookie = request.cookies.get('userid')
+    cookie = current_user.id
 
     if cookie != None:
         mydb = connect_db()
@@ -179,17 +180,14 @@ def signin_success():
 @app.route('/logout', methods=['POST'])
 def logout():
     if request.method == 'POST':
-        username = request.cookies.get('userid')
-        resp = make_response(redirect("http://130.240.200.57:5001"))
-        resp.set_cookie('userid', username, max_age=0)
-        return resp
-    else:
+        #username = current_user.id
+        logout_user()
         return redirect("http://130.240.200.57:5001")
 
 
 @app.route('/account')
 def accounOAt():
-    cookie= request.cookies.get('userid')
+    cookie= current_user.id
     token= token_current_user()
 
     return render_template('account.html', cookie=cookie, token=token)
@@ -201,7 +199,7 @@ def get_token():
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
-        userid = request.cookies.get('userid')
+        userid = current_user.id
         token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30000)},
                                app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = \"" + token + "\" WHERE name = \"" + userid + "\";")
@@ -214,7 +212,7 @@ def get_token():
 def detail():
     if request.method == 'GET':
         id = request.args.get('id')
-        userid = request.cookies.get('userid')
+        userid = current_user.id
         if userid != None:
             mydb = connect_db()
             cursor = mydb.cursor()
@@ -272,7 +270,7 @@ def detail_user():
 @app.route('/detail_admin', methods=['GET'])
 def detail_admin():
     if request.method == 'GET':
-        userid = request.cookies.get('userid')
+        userid = current_user.id
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
@@ -318,7 +316,7 @@ def simulator_conf_success():
 
 @app.route('/user_overview')
 def user_overview():
-    userid = request.cookies.get('userid')
+    userid = current_user.id
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
@@ -332,7 +330,7 @@ def user_overview():
         data = response.json()
         idlist = data['id']
         rolelist = data['role']
-        cookie = request.cookies.get('userid')
+        cookie = current_user.id
         return render_template('user_overview.html', idlist=idlist, cookie=cookie)
     else:
         return redirect("http://130.240.200.57:5001")
@@ -341,7 +339,7 @@ def user_overview():
 @app.route('/delete_user', methods=['POST', 'GET'])
 def delete_user():
     if request.method == 'POST':
-        userid = request.cookies.get('userid')
+        userid = current_user.id
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
@@ -364,7 +362,7 @@ def delete_user():
 @app.route('/delete', methods=['POST', 'GET'])
 def delete():
     if request.method == 'POST':
-        userid = request.cookies.get('userid')
+        userid = current_user.id
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
@@ -411,13 +409,6 @@ def success():
         }
         requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
-
-# somewhere to logout
-@app.route("/logouttest")
-@login_required
-def logouttest():
-    logout_user()
-    return Response('<p>Logged out</p>')
 
 # callback to reload the user object
 @login_manager.user_loader
