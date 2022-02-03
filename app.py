@@ -169,7 +169,7 @@ def signin_success():
         if response.status_code == 200:
             resp = make_response(redirect("http://130.240.200.57:5001/"))
             resp.set_cookie('userid', name, max_age=3600 * 24 * 14)
-            User(name=name, password=password)
+            user=User(name=name, password=password)
             login_user(user)
             return resp
         else:
