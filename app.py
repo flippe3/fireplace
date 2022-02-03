@@ -395,7 +395,7 @@ def create():
         token_valid = 1
     except:
         token_valid = 0
-    return render_template("create.html", token_valid)
+    return render_template("create.html", token_valid=token_valid)
 
 
 # Assisting function after a fireplace was created
