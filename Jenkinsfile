@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh 'pip install flask'
                 sh 'pip install mysql-connector-python'
+                sh 'pip install flask_login'
             }
         }
         stage('test') {
