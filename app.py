@@ -59,7 +59,7 @@ def token_current_user():
 @app.route('/logintest')
 @login_required
 def home():
-    print(str(current_user.name))
+    print(str(current_user.id))
     return Response("Hello World!")
 
 @app.route('/')
