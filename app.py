@@ -418,10 +418,9 @@ def success():
             "latitude": latitude,
             "longitude": longitude,
             "wood": wood,
-            "token": token_current_user(),
-            "token_valid": token_valid
+            "token": token_current_user()
         }
-        requests.get("http://172.30.103.27:4242/create", params=point)
+        requests.get("http://172.30.103.27:4242/create", params=point, token_valid=token_valid)
         return redirect("http://130.240.200.57:5001/")
 
 # callback to reload the user object
