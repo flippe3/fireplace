@@ -389,7 +389,13 @@ def delete():
 # call the template for the creation of a new fireplace
 @app.route('/create')
 def create():
-    return render_template("create.html")
+    token = token_current_user()
+    try:
+        jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
+        token_valid = 1
+    except:
+        token_valid = 0
+    return render_template("create.html", token_valid)
 
 
 # Assisting function after a fireplace was created
@@ -406,12 +412,7 @@ def success():
         except:
             wood = "off"
 
-        token = token_current_user()
-        try:
-            jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
-            token_valid = 1
-        except:
-            token_valid = 0
+
 
         point = {
             "name": name,
@@ -420,7 +421,7 @@ def success():
             "wood": wood,
             "token": token_current_user()
         }
-        requests.get("http://172.30.103.27:4242/create", params=point, token_valid=token_valid)
+        requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
 
 # callback to reload the user object
