@@ -7,8 +7,7 @@ import mysql.connector
 import datetime
 from werkzeug.utils import secure_filename
 from flask import Flask, Response, redirect, url_for, request, session, abort
-from flask_login import LoginManager, UserMixin, \
-    login_required, login_user, logout_user, current_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey'
