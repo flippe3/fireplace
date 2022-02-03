@@ -9,9 +9,9 @@
 </head>
 <body class="text-center p-3 mb-2 bg-dark text-black">
 <ul class="list-group">
-    {% if cookie %}
+    {% if userid %}
     <form class="form-signup" action="http://130.240.200.57:5001/get_token" method="POST">
-        <h2 class="text-white"> Account: {{ cookie }}</h2>
+        <h2 class="text-white"> Account: {{ userid }}</h2>
         <h5 class="text-white">Token valid: {{ token_valid }}</h5>
         <h5 class="text-white"> Current token: {{ token }}</h5>
         <input type="password" name="password" class="form-control mb-1" placeholder="Password" required>

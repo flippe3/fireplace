@@ -47,7 +47,7 @@ def connect_db():
 
 # get token for the current user
 def token_current_user():
-    userid = request.cookies.get('userid')
+    userid = current_user.id
     mydb = connect_db()
     cursor = mydb.cursor()
     cursor.execute("USE firedb")
@@ -72,22 +72,22 @@ def map_func():
     namelist = data['name']
     woodlist = data['wood']
     try:
-        cookie = current_user.id
+        userid = current_user.id
     except:
-        cookie = None
+        userid = None
 
-    if cookie != None:
+    if userid != None:
         mydb = connect_db()
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
-        cursor.execute("SELECT role FROM users WHERE name=\"" + str(cookie) + "\";")
+        cursor.execute("SELECT role FROM users WHERE name=\"" + str(userid) + "\";")
         role = cursor.fetchone()[0]
         if role == "admin":
             return render_template('map.html', idlist=idlist, namelist=namelist, latlist=latlist, longlist=longlist,
-                                   woodlist=woodlist, cookie=cookie, admin=True)
+                                   woodlist=woodlist, userid=userid, admin=True)
 
     return render_template('map.html', idlist=idlist, namelist=namelist, latlist=latlist, longlist=longlist,
-                           woodlist=woodlist, cookie=cookie, admin=False)
+                           woodlist=woodlist, userid=userid, admin=False)
 
 
 def allowed_file(filename):
@@ -144,9 +144,7 @@ def signup_success():
 
         response = requests.get("http://172.30.103.27:4242/signup", params=user)
         if response.status_code == 200:
-            resp = make_response(redirect("http://130.240.200.57:5001/"))
-            resp.set_cookie('userid', name, max_age=3600 * 24 * 14)
-            return resp
+            return redirect("http://130.240.200.57:5001/")
         else:
             return render_template("signup.html", success="false")
 
@@ -170,11 +168,9 @@ def signin_success():
         }
         response = requests.get("http://172.30.103.27:4242/signin", params=user)
         if response.status_code == 200:
-            resp = make_response(redirect("http://130.240.200.57:5001/"))
-            resp.set_cookie('userid', name, max_age=3600 * 24 * 14)
-            user=User(id=name)
+            user = User(id=name)
             login_user(user)
-            return resp
+            return redirect("http://130.240.200.57:5001/")
         else:
             return render_template("signin.html", success="false")
 
@@ -189,14 +185,14 @@ def logout():
 
 @app.route('/account')
 def accounOAt():
-    cookie= current_user.id
+    userid= current_user.id
     token= token_current_user()
     try:
         jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
         token_valid = True
     except:
         token_valid = False
-    return render_template('account.html', cookie=cookie, token=token, token_valid=token_valid)
+    return render_template('account.html', userid=userid, token=token, token_valid=token_valid)
 
 
 @app.route('/get_token', methods=['POST'])
@@ -206,7 +202,7 @@ def get_token():
         cursor = mydb.cursor()
         cursor.execute("USE firedb")
         userid = current_user.id
-        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)},
+        token = str(jwt.encode({'user': userid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=86400)},
                                app.config['SECRET_KEY'], algorithm="HS256"))
         cursor.execute("UPDATE users SET token = \"" + token + "\" WHERE name = \"" + userid + "\";")
         mydb.commit()
@@ -336,8 +332,8 @@ def user_overview():
         data = response.json()
         idlist = data['id']
         rolelist = data['role']
-        cookie = current_user.id
-        return render_template('user_overview.html', idlist=idlist, cookie=cookie)
+        userid = current_user.id
+        return render_template('user_overview.html', idlist=idlist, userid=userid)
     else:
         return redirect("http://130.240.200.57:5001")
 

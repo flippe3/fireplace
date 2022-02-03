@@ -12,7 +12,7 @@
 <body class="p-3 mb-2 bg-dark text-white">
   {% block content %}
   <div class="mb-3 text-center">
-    {% if cookie %}
+    {% if userid %}
       <a href="/simulator_conf" class="btn btn-info float-left" role="button">Book</a>
       {% if admin == True %}
       <a href="/user_overview" class="btn btn-info float-left ml-2" role="button">Users</a>
@@ -21,7 +21,7 @@
       <form class="form-logout float-right ml-2" action="http://130.240.200.57:5001/logout" method="POST">
         <button class="btn btn-danger" type="submit">Logout</button>
       </form>
-      <a href="/account" class="btn btn-success float-right" role="button">{{cookie}}</a>
+      <a href="/account" class="btn btn-success float-right" role="button">{{userid}}</a>
     {% else %}
       <a href="/signup" class="btn btn-info" role="button">Sign Up</a>
       <a href="/signin" class="btn btn-info" role="button">Sign In</a>
