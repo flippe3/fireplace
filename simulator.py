@@ -57,8 +57,10 @@ def get_data(lat, lon, api_key):
         return weather
     else:
         print("Calling the weather API failed.")
+        weather['current'] = {}
         weather['current']['temp_c'] = 0 
         weather['current']['wind_kph'] = 0
+        weather['current']['condition'] = {}
         weather['current']['condition']['text'] = "None"
         return weather
 
