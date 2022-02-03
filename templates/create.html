@@ -9,7 +9,7 @@
 </head>
 <body class="text-center p-3 mb-2 bg-dark text-white">
 
-{% if token_valid=="false" %}
+{% if token_valid==0 %}
   <div class="alert alert-danger alert-dismissible mt-2">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Your Token has expired. Please set a new one on your user page!</strong>

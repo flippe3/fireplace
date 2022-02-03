@@ -409,9 +409,9 @@ def success():
         token = token_current_user()
         try:
             jwt.decode(str(token), app.config['SECRET_KEY'], algorithms="HS256")
-            token_valid = "true"
+            token_valid = 1
         except:
-            token_valid = "false"
+            token_valid = 0
 
         point = {
             "name": name,
