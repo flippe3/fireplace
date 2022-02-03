@@ -47,8 +47,8 @@ def calculate(weather):
     else:
         percentage = ((0.5 - (might_rain * 0.3)) + (0.2 - abs(temp * 0.01)) + (0.1 - (wind * 0.02))) * 0.3
     if set_time != 0 and set_time <= current_time and current_time < set_time+100:
-        return percentage - 0.25
-    return percentage
+        return abs(percentage - 0.25)
+    return abs(percentage)
 
 def get_data(lat, lon, api_key):
     code, weather = get_weather(lat, lon, datetime.utcnow().hour, api_key)
