@@ -416,7 +416,7 @@ def success():
 # somewhere to logout
 @app.route("/logouttest")
 @login_required
-def logout():
+def logouttest():
     logout_user()
     return Response('<p>Logged out</p>')
 
