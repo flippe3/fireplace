@@ -421,8 +421,8 @@ def logouttest():
 
 # callback to reload the user object
 @login_manager.user_loader
-def load_user(userid):
-    return User(userid)
+def load_user(userid, password):
+    return User(userid, password)
 
 # handle login failed
 @app.errorhandler(401)
