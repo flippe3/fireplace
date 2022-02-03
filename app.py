@@ -6,13 +6,35 @@ import requests
 import mysql.connector
 import datetime
 from werkzeug.utils import secure_filename
+from flask import Flask, Response, redirect, url_for, request, session, abort
+from flask_login import LoginManager, UserMixin, \
+    login_required, login_user, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey'
+# config
+app.config.update(
+    DEBUG=True,
+    SECRET_KEY='thisisthesecretkey'
+)
 UPLOAD_FOLDER = '/home/lensee-1/jenkins_workspace/fireplace/static/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# flask-login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+# silly user model
+class User(UserMixin):
+
+    def __init__(self,  name, pwd_hash):
+        self.name = name
+        self.password = pwd_hash
+
+    def __repr__(self):
+        return "%d/%s/%s" % (self.name, self.password)
 
 # connection to database, database is not accessible remotely, no secure password needed
 def connect_db():
@@ -34,6 +56,12 @@ def token_current_user():
     token = cursor.fetchall()[0][0][2:-1]
     return token
 
+# some protected url
+@app.route('/logintest')
+@login_required
+def home():
+    print(str(current_user.name))
+    return Response("Hello World!")
 
 @app.route('/')
 def map_func():
@@ -142,6 +170,8 @@ def signin_success():
         if response.status_code == 200:
             resp = make_response(redirect("http://130.240.200.57:5001/"))
             resp.set_cookie('userid', name, max_age=3600 * 24 * 14)
+            User(name=name, password=password)
+            login_user(user)
             return resp
         else:
             return render_template("signin.html", success="false")
@@ -383,6 +413,22 @@ def success():
         requests.get("http://172.30.103.27:4242/create", params=point)
         return redirect("http://130.240.200.57:5001/")
 
+# somewhere to logout
+@app.route("/logouttest")
+@login_required
+def logout():
+    logout_user()
+    return Response('<p>Logged out</p>')
+
+# callback to reload the user object
+@login_manager.user_loader
+def load_user(userid):
+    return User(userid)
+
+# handle login failed
+@app.errorhandler(401)
+def page_not_found(e):
+    return Response('<p>Login failed</p>')
 
 if __name__ == '__main__':
     app.run(host="172.30.103.27", port=5001, debug=False)
